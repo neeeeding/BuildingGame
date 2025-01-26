@@ -4,28 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerInput : Singleton<PlayerInput>
 {
-    private Rigidbody _rigidbody;
     private KeyInputAction playerInput;
+    public Action<Vector2> OnMove;
+    public Action OnJump;
+    public Action OnClickMouse;
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
         playerInput = new KeyInputAction();
         playerInput.PlayerInputAction.Enable();
         playerInput.PlayerInputAction.Jump.performed += Jump;
+        playerInput.PlayerInputAction.ClickAction.performed += Click;
+    }
+
+    private void Click(InputAction.CallbackContext obj)
+    {
+        OnClickMouse?.Invoke();
     }
 
     private void Update()
     {
         Vector2 inputVector = playerInput.PlayerInputAction.Move.ReadValue<Vector2>();
-        float speed = 20f;
-        _rigidbody.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speed, ForceMode.Force);
+        OnMove?.Invoke(inputVector);
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
-        _rigidbody.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+        OnJump?.Invoke();
     }
 }

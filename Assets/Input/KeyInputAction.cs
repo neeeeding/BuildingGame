@@ -44,6 +44,15 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ClickAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""295ebbb7-d9a9-470e-8b10-43e1582bd28f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -64,7 +73,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -75,7 +84,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -86,7 +95,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -97,7 +106,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -159,12 +168,34 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""bc532584-0415-45eb-8873-301471ad3e4a"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";MOBILE"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""dd9527a1-ddbf-4555-a778-b2bc77adac87"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";PC"",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b60bdf53-53eb-4bf1-8bcd-eb0ced1200d4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""ClickAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -193,6 +224,11 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
             ""bindingGroup"": ""MOBILE"",
             ""devices"": [
                 {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
                     ""devicePath"": ""<Touchscreen>"",
                     ""isOptional"": false,
                     ""isOR"": false
@@ -205,6 +241,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
         m_PlayerInputAction = asset.FindActionMap("PlayerInputAction", throwIfNotFound: true);
         m_PlayerInputAction_Move = m_PlayerInputAction.FindAction("Move", throwIfNotFound: true);
         m_PlayerInputAction_Jump = m_PlayerInputAction.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerInputAction_ClickAction = m_PlayerInputAction.FindAction("ClickAction", throwIfNotFound: true);
     }
 
     ~@KeyInputAction()
@@ -273,12 +310,14 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
     private List<IPlayerInputActionActions> m_PlayerInputActionActionsCallbackInterfaces = new List<IPlayerInputActionActions>();
     private readonly InputAction m_PlayerInputAction_Move;
     private readonly InputAction m_PlayerInputAction_Jump;
+    private readonly InputAction m_PlayerInputAction_ClickAction;
     public struct PlayerInputActionActions
     {
         private @KeyInputAction m_Wrapper;
         public PlayerInputActionActions(@KeyInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerInputAction_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerInputAction_Jump;
+        public InputAction @ClickAction => m_Wrapper.m_PlayerInputAction_ClickAction;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInputAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -294,6 +333,9 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @ClickAction.started += instance.OnClickAction;
+            @ClickAction.performed += instance.OnClickAction;
+            @ClickAction.canceled += instance.OnClickAction;
         }
 
         private void UnregisterCallbacks(IPlayerInputActionActions instance)
@@ -304,6 +346,9 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @ClickAction.started -= instance.OnClickAction;
+            @ClickAction.performed -= instance.OnClickAction;
+            @ClickAction.canceled -= instance.OnClickAction;
         }
 
         public void RemoveCallbacks(IPlayerInputActionActions instance)
@@ -343,5 +388,6 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnClickAction(InputAction.CallbackContext context);
     }
 }
