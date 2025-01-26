@@ -1,18 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraRotat : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private float moveSpeed = 8f;
+    private float mouseX = 0f;
+    private float mouseY = 0f;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        mouseX += Input.GetAxis("Mouse X") * moveSpeed;
+        mouseY += Input.GetAxis("Mouse Y") * moveSpeed;
+
+        mouseX = Mathf.Clamp(mouseX, -150f, 150f);
+        mouseY = Mathf.Clamp(mouseY, -50f, 30f);
+
+        transform.localEulerAngles = new Vector3(-mouseY, mouseX, 0);
     }
 }

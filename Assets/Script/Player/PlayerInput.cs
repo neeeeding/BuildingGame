@@ -18,7 +18,6 @@ public class PlayerInput : Singleton<PlayerInput>
         playerInput.PlayerInputAction.Jump.performed += Jump;
         playerInput.PlayerInputAction.ClickAction.performed += Click;
     }
-
     private void Click(InputAction.CallbackContext obj)
     {
         OnClickMouse?.Invoke();
