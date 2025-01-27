@@ -9,14 +9,16 @@ public class CameraRotat : MonoBehaviour
     private float mouseX = 0f;
     private float mouseY = 0f;
 
+    [SerializeField]private bool IsCamera;
+
     private void Update()
     {
         mouseX += Input.GetAxis("Mouse X") * moveSpeed;
         mouseY += Input.GetAxis("Mouse Y") * moveSpeed;
 
-        mouseX = Mathf.Clamp(mouseX, -150f, 150f);
+        //mouseX = Mathf.Clamp(mouseX, -170f, 170f);
         mouseY = Mathf.Clamp(mouseY, -50f, 30f);
 
-        transform.localEulerAngles = new Vector3(-mouseY, mouseX, 0);
+        transform.localEulerAngles = new Vector3(IsCamera ? -mouseY:0, IsCamera ? 0: mouseX, 0);
     }
 }
