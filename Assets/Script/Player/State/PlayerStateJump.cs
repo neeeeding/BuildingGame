@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerStateJump : PlayerState
 {
-    private float _JumpSpeed = 20f; //점프 속도
+    private float _JumpSpeed = 3f; //점프 속도
     public PlayerStateJump(string animationName, PlayerStateMachin stateMachin, Player player) : base(animationName, stateMachin, player)
     {
     }
