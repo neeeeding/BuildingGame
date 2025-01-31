@@ -33,6 +33,7 @@ public class PlayerStateWalk : PlayerState
     {
         if(value == Vector2.zero)
         {
+            _moveVector = Vector3.zero;
             _stateMachin.ChangeState(PlayerStateEnum.Idle);
         }
         _moveVector = new Vector3(value.x, 0, value.y);
