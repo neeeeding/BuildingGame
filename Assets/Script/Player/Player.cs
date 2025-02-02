@@ -49,9 +49,9 @@ public class Player : MonoBehaviour
         Collider[] collider = Physics.OverlapBox(groundCheck.position, groundCheckSize, Quaternion.identity, ground);
         if(collider.Length > 0)
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void OnDrawGizmos()
