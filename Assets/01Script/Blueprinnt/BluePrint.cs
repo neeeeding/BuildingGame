@@ -37,7 +37,7 @@ public class BluePrint : MonoBehaviour
         else
         {
             gameObject.transform.parent.gameObject.SetActive(false);
-            SceneManager.LoadScene(currentBlueprint.number + 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + currentBlueprint.number);
         }
     }
 
