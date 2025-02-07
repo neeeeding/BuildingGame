@@ -9,9 +9,9 @@ public class BlueprintSO : ScriptableObject
 {
     [Header("Blueprint Setting")]
 
-    [SerializeField] private int number;
+    public int number;
 
-    public bool liberation;
+    public bool isLock; //true = 잠겨있다. false = 열려있다.
 
     public Image image;
 }
