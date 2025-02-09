@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "BlueprintSO", menuName = "SO") ]
+[CreateAssetMenu(fileName = "BlueprintSO", menuName = "SO/BlueprintSO") ]
 
 public class BlueprintSO : ScriptableObject
 {
