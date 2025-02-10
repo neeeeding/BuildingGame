@@ -16,7 +16,7 @@ public class MiniMapChange : MonoBehaviour
     {
         isMap = false;
 
-        blueprint = blueprintImage.image;
+        //blueprint = blueprintImage.image;
 
         miniMap.SetActive(isMap);
         blueprint.gameObject.SetActive(!isMap);
