@@ -6,16 +6,20 @@ using System;
 
 public class ToolCard : MonoBehaviour
 {
-    [SerializeField] private GameObject myTool; //도구 (실제)
+    [SerializeField] private GameObject realTool; //도구 (실제)
     [SerializeField] private ToolSO toolType; //도구 종류
-    private Image myImage; //도구 이미지 (버튼)
-    public Action<ToolSO> toolUseBtnShow; //도구 사용 버튼
+    private Image _myImage; //도구 이미지 (버튼)
+    public static Action<ToolSO> toolBtnUse; //도구 사용 버튼
+    public static Action toolBtnNotUse; //도구 사용 버튼
+
+    private GameObject player;
 
     private void Awake()
     {
-        myImage = GetComponent<Image>();
+        _myImage = GetComponent<Image>();
         toolType.isUse = false;
-        myTool.SetActive(false);
+        realTool.SetActive(false);
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Start()
@@ -37,14 +41,23 @@ public class ToolCard : MonoBehaviour
         }
     }
 
-    public virtual void NotUse()
+    public void NotUse()
     {
-        myImage.color = Color.white;
+        _myImage.color = Color.white;
+
+        toolBtnNotUse?.Invoke();
+
+        realTool.SetActive(false);
+        realTool.transform.SetParent(transform, false);
     }
 
-    public virtual void UseTool() //사용 버튼 활성화
+    public void UseTool() //사용 버튼 활성화
     {
-        myImage.color = new Color(95 / 225f, 95 / 225f, 95 / 225f, 1);
-        toolUseBtnShow?.Invoke(toolType);
+        _myImage.color = new Color(95 / 225f, 95 / 225f, 95 / 225f, 1);
+
+        toolBtnUse?.Invoke(toolType);
+
+        realTool.SetActive(true);
+        realTool.transform.SetParent(player.transform, false);
     }
 }
