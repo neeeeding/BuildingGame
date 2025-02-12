@@ -12,6 +12,8 @@ public class ToolCard : MonoBehaviour
     public static Action<ToolSO> toolBtnUse; //도구 사용 버튼
     public static Action toolBtnNotUse; //도구 사용 버튼
 
+    [SerializeField] private bool isUseTool; //true : 사용중인 도구가 존재, false : 사용 가능함
+
     private GameObject player;
 
     private void Awake()
@@ -26,19 +28,17 @@ public class ToolCard : MonoBehaviour
     {
         // myImage = toolType.toolImage;
         NotUse();
+        isUseTool = false;
     }
 
     public void ClickTool()
     {
         toolType.isUse = !toolType.isUse;
-        if (toolType.isUse)
-        {
-            UseTool();
-        }
-        else
-        {
-            NotUse();
-        }
+
+        if (toolType.isUse && !isUseTool) UseTool();
+        else if(isUseTool&& !toolType.isUse) NotUse();
+
+        isUseTool = toolType.isUse;
     }
 
     public void NotUse()

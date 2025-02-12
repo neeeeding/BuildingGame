@@ -8,27 +8,51 @@ public class ToolUseBtn : MonoBehaviour
 {
     private Image btnImage;
 
+    [SerializeField] private GameObject justUseBtn;
+    [SerializeField] private GameObject yBtn;
+    [SerializeField] private GameObject xBtn;
+
     private void Awake()
     {
-        btnImage = GetComponentInChildren<Image>();
+        btnImage = justUseBtn.GetComponent<Image>();
         ToolCard.toolBtnUse += ActiveBtn;
         ToolCard.toolBtnNotUse += NotActiveBtn;
     }
 
-    public void ClcikBtn()
+    public void JustBtnClick()
+    {
+
+    }
+
+    public void XBtnClick()
+    {
+
+    }
+
+    public void YBtnClcik()
     {
 
     }
 
     private void ActiveBtn(ToolSO so) //버튼 활성화 될 때
     {
-        btnImage.gameObject.SetActive(true);
-        //btnImage = so.toolImage;
+        if(so.type == ToolType.car)
+        {
+            btnImage.gameObject.SetActive(true);
+            //btnImage = so.toolImage;
+        }
+        else if(so.type == ToolType.rotateTool)
+        {
+            yBtn.SetActive(true);
+            xBtn.SetActive(true);
+        }
     }
 
     private void NotActiveBtn()
     {
-        btnImage.gameObject.SetActive(false);
+        justUseBtn.SetActive(false);
+        yBtn.SetActive(false);
+        xBtn.SetActive(false);
     }
 
     private void OnDisable()

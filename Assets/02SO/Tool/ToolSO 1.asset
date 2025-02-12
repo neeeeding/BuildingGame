@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7858a3d53527b354ba9a4732db1ea2d0, type: 3}
-  m_Name: ToolSO 0
+  m_Name: ToolSO 1
   m_EditorClassIdentifier: 
   toolName: Car
-  type: 0
-  isUse: 1
+  type: 2
+  isUse: 0
   toolImage: {fileID: 0}
