@@ -10,7 +10,7 @@ public class ToolSO : ScriptableObject
 
     public ToolType type;
 
-    public bool isUse;
+    public bool isUse; //true : 사용중임, false : 사용중이 아님
 
     public Image toolImage;
 }
