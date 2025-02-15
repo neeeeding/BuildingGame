@@ -1,20 +1,19 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStateWalk : PlayerState
+public class PlayerStateClimb : PlayerState
 {
     private float _moveSpeed = 5f; //움직임 속도
     private Vector3 _moveVector;
-
-    public PlayerStateWalk(string animationName, PlayerStateMachin stateMachin, Player player) : base(animationName, stateMachin, player)
+    public PlayerStateClimb(string animationName, PlayerStateMachin stateMachin, Player player) : base(animationName, stateMachin, player)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
+
         PlayerInput.Instance.OnJump += JumpState;
         PlayerInput.Instance.OnMove += Move;
     }
@@ -23,16 +22,11 @@ public class PlayerStateWalk : PlayerState
     {
         base.UpdateState();
 
-        if (!_player.CheckGround())
+        if (!_player.CheckLadder())
         {
-            _stateMachin.ChangeState(PlayerStateEnum.Fall);
-        }
-        if (_player.CheckLadder())
-        {
-            _stateMachin.ChangeState(PlayerStateEnum.climb);
+            _stateMachin.ChangeState(PlayerStateEnum.Idle);
         }
     }
-
     public override void FixedUpdateState()
     {
         base.FixedUpdateState();
@@ -40,13 +34,14 @@ public class PlayerStateWalk : PlayerState
     }
     private void Move(Vector2 value)
     {
-        if(value == Vector2.zero)
+        if (value == Vector2.zero)
         {
             _moveVector = Vector3.zero;
             _stateMachin.ChangeState(PlayerStateEnum.Idle);
         }
-        _moveVector = new Vector3(value.x, 0, value.y);
+        _moveVector = new Vector3(0, value.y,0);
     }
+
     private void JumpState()
     {
         _stateMachin.ChangeState(PlayerStateEnum.Jump);
@@ -58,5 +53,4 @@ public class PlayerStateWalk : PlayerState
         PlayerInput.Instance.OnJump -= JumpState;
         PlayerInput.Instance.OnMove -= Move;
     }
-
 }

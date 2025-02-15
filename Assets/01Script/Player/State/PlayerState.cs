@@ -39,5 +39,5 @@ public abstract class PlayerState
 
 public enum PlayerStateEnum
 {
-    Idle, Walk, Jump,Fall, PickUp, Use, None
+    Idle, Walk, Jump, Fall, climb, PickUp, Use, None
 }

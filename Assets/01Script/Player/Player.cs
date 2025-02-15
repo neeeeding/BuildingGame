@@ -10,6 +10,10 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask ground;
     [SerializeField] private Vector3 groundCheckSize;
 
+    [SerializeField] private Transform ladderCheck;
+    [SerializeField] private LayerMask ladder;
+    [SerializeField] private Vector3 ladderCheckSize;
+
     private Animator animator;
     public Animator Animator => animator;
     private Rigidbody rigid;
@@ -27,6 +31,7 @@ public class Player : MonoBehaviour
         stateMachin.AddState(PlayerStateEnum.Walk,new PlayerStateWalk("Walk", stateMachin, this));
         stateMachin.AddState(PlayerStateEnum.Jump,new PlayerStateJump("Jump", stateMachin, this));
         stateMachin.AddState(PlayerStateEnum.Fall,new PlayerStateFall("Fall", stateMachin, this));
+        stateMachin.AddState(PlayerStateEnum.climb,new PlayerStateClimb("Climb", stateMachin, this));
         //stateMachin.AddState(PlayerStateEnum.PickUp,new PlayerStatePickUp("PickUp", stateMachin, this));
         //stateMachin.AddState(PlayerStateEnum.Use,new PlayerStateUse("Use", stateMachin, this));
         stateMachin.Init(PlayerStateEnum.Idle);
@@ -54,9 +59,22 @@ public class Player : MonoBehaviour
         return false;
     }
 
+    public bool CheckLadder()
+    {
+        Collider[] collider = Physics.OverlapBox(ladderCheck.position, ladderCheckSize, Quaternion.identity, ladder);
+        if (collider.Length > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawCube(groundCheck.position, groundCheckSize);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawCube(ladderCheck.position, ladderCheckSize);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerStateJump : PlayerState
 {
-    private float _JumpSpeed = 5f; //점프 속도
+    private float _JumpSpeed = 7f; //점프 속도
 
     private Vector2 _playerPosition;
     public PlayerStateJump(string animationName, PlayerStateMachin stateMachin, Player player) : base(animationName, stateMachin, player)
@@ -29,6 +29,10 @@ public class PlayerStateJump : PlayerState
         if(_playerPosition.y > _player.transform.position.y)
         {
             _stateMachin.ChangeState(PlayerStateEnum.Fall);
+        }
+        if (_player.CheckLadder())
+        {
+            _stateMachin.ChangeState(PlayerStateEnum.climb);
         }
         _playerPosition = _player.transform.position;
     }

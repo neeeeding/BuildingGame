@@ -16,6 +16,20 @@ public class PlayerStateIdle : PlayerState
         PlayerInput.Instance.OnMove += Move;
     }
 
+    public override void UpdateState()
+    {
+        base.UpdateState();
+
+        if (!_player.CheckGround())
+        {
+            _stateMachin.ChangeState(PlayerStateEnum.Fall);
+        }
+        if (_player.CheckLadder())
+        {
+            _stateMachin.ChangeState(PlayerStateEnum.climb);
+        }
+    }
+
     private void Move(Vector2 value)
     {
         if(value != Vector2.zero)
