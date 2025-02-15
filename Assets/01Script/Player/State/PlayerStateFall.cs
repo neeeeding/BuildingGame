@@ -11,18 +11,24 @@ public class PlayerStateFall : PlayerState
     public override void Enter()
     {
         base.Enter();
+        _player.Acceleration(0);
         PlayerInput.Instance.OnMove += Move;
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
+
+        _player.Acceleration(0);
+
         if (_player.CheckGround())
         {
+            _player.Acceleration(5);
             _stateMachin.ChangeState(PlayerStateEnum.Idle);
         }
         if (_player.CheckLadder())
         {
+            _player.Acceleration(5);
             _stateMachin.ChangeState(PlayerStateEnum.climb);
         }
     }

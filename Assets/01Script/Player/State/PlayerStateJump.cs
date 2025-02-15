@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class PlayerStateJump : PlayerState
 {
-    private float _JumpSpeed = 7f; //점프 속도
+    private float _JumpSpeed = 9f; //점프 속도
 
-    private Vector2 _playerPosition;
     public PlayerStateJump(string animationName, PlayerStateMachin stateMachin, Player player) : base(animationName, stateMachin, player)
     {
     }
@@ -15,8 +14,6 @@ public class PlayerStateJump : PlayerState
     public override void Enter()
     {
         base.Enter();
-
-        _playerPosition = Vector2.zero;
 
         _player.Rigidbody.AddForce(Vector3.up * _JumpSpeed, ForceMode.Impulse);
         PlayerInput.Instance.OnMove += Move;
@@ -26,15 +23,19 @@ public class PlayerStateJump : PlayerState
     {
         base.UpdateState();
 
-        if(_playerPosition.y > _player.transform.position.y)
-        {
-            _stateMachin.ChangeState(PlayerStateEnum.Fall);
-        }
         if (_player.CheckLadder())
         {
             _stateMachin.ChangeState(PlayerStateEnum.climb);
         }
-        _playerPosition = _player.transform.position;
+    }
+
+    public override void FixedUpdateState()
+    {
+        base.FixedUpdateState();
+        if (_player.Rigidbody.velocity.y < 0)
+        {
+            _stateMachin.ChangeState(PlayerStateEnum.Fall);
+        }
     }
 
     private void Move(Vector2 value)

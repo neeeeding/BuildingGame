@@ -15,18 +15,19 @@ public class PlayerStateWalk : PlayerState
     public override void Enter()
     {
         base.Enter();
+        _player.Acceleration(5);
         PlayerInput.Instance.OnJump += JumpState;
         PlayerInput.Instance.OnMove += Move;
+        if (!_player.CheckGround())
+        {
+            _player.Rigidbody.velocity = _player.transform.TransformDirection(_moveVector) * _moveSpeed + new Vector3(0, _player.Rigidbody.velocity.y/1.1f, 0);
+        }
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
 
-        if (!_player.CheckGround())
-        {
-            _stateMachin.ChangeState(PlayerStateEnum.Fall);
-        }
         if (_player.CheckLadder())
         {
             _stateMachin.ChangeState(PlayerStateEnum.climb);
@@ -36,7 +37,15 @@ public class PlayerStateWalk : PlayerState
     public override void FixedUpdateState()
     {
         base.FixedUpdateState();
-        _player.Rigidbody.velocity = _player.transform.TransformDirection(_moveVector) * _moveSpeed;
+
+        if (!_player.CheckGround())
+        {
+            _stateMachin.ChangeState(PlayerStateEnum.Fall);
+        }
+        else
+        {
+            _player.Rigidbody.velocity = _player.transform.TransformDirection(_moveVector) * _moveSpeed + new Vector3(0, _player.Rigidbody.velocity.y, 0);
+        }
     }
     private void Move(Vector2 value)
     {

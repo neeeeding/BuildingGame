@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
         //stateMachin.AddState(PlayerStateEnum.Use,new PlayerStateUse("Use", stateMachin, this));
         stateMachin.Init(PlayerStateEnum.Idle);
         currentState = stateMachin.currentState.animationName;
+
+        Acceleration(5);
     }
 
     private void Update()
@@ -47,6 +49,11 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         stateMachin.currentState.FixedUpdateState();
+    }
+
+    public void Acceleration(float force)
+    {
+        rigid.drag = force;
     }
 
     public bool CheckGround()
