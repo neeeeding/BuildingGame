@@ -39,7 +39,7 @@ public class ToolUseBtn : MonoBehaviour
         if(so.type == ToolType.car)
         {
             btnImage.gameObject.SetActive(true);
-            //btnImage = so.toolImage;
+            btnImage.sprite = so.toolImage;
         }
         else if(so.type == ToolType.rotateTool)
         {

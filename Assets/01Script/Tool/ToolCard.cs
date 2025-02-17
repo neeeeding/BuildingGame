@@ -25,7 +25,7 @@ public class ToolCard : MonoBehaviour
     }
     private void Start()
     {
-        // myImage = toolType.toolImage;
+        _myImage.sprite = toolType.toolImage;
         NotUse();
         isUseTool = false;
     }

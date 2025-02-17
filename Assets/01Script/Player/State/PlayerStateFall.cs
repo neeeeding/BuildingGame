@@ -33,6 +33,13 @@ public class PlayerStateFall : PlayerState
         }
     }
 
+    public override void FixedUpdateState()
+    {
+        base.FixedUpdateState();
+
+        _player.Rigidbody.AddForce(Vector3.down * 9.8f, ForceMode.Acceleration);
+    }
+
     private void Move(Vector2 value)
     {
         if (value != Vector2.zero)
