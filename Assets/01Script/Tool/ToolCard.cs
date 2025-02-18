@@ -9,7 +9,7 @@ public class ToolCard : MonoBehaviour
     [SerializeField] private GameObject realTool; //도구 (실제)
     [SerializeField] private ToolSO toolType; //도구 종류
     private Image _myImage; //도구 이미지 (버튼)
-    public static Action<ToolSO> toolBtnUse; //도구 사용 버튼
+    public static Action<ToolSO, GameObject> toolBtnUse; //도구 사용 버튼
     public static Action toolBtnNotUse; //도구 사용 버튼
 
     private static bool isUseTool; //true : 사용중인 도구가 존재, false : 사용 가능함
@@ -45,18 +45,24 @@ public class ToolCard : MonoBehaviour
         _myImage.color = Color.white;
 
         toolBtnNotUse?.Invoke();
-
-        realTool.SetActive(false);
-        realTool.transform.SetParent(transform, false);
+        
+        if(toolType.type == ToolType.car)
+        {
+            realTool.SetActive(false);
+            realTool.transform.SetParent(transform, false);
+        }
     }
 
     public void UseTool() //사용 버튼 활성화
     {
         _myImage.color = new Color(95 / 225f, 95 / 225f, 95 / 225f, 1);
 
-        toolBtnUse?.Invoke(toolType);
+        toolBtnUse?.Invoke(toolType, realTool);
 
-        realTool.SetActive(true);
-        realTool.transform.SetParent(player.transform, false);
+        if (toolType.type == ToolType.car)
+        {
+            realTool.SetActive(true);
+            realTool.transform.SetParent(player.transform, false);
+        }
     }
 }
