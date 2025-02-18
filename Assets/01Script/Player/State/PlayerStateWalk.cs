@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerStateWalk : PlayerState
 {
     private float _moveSpeed = 8f; //움직임 속도
+
+    private float _walkSpeed = 8f;
+    private float _FastSpeed = 15f;
     private Vector3 _moveVector;
 
     public PlayerStateWalk(string animationName, PlayerStateMachin stateMachin, Player player) : base(animationName, stateMachin, player)
@@ -18,11 +21,23 @@ public class PlayerStateWalk : PlayerState
         _player.Acceleration(5);
         PlayerInput.Instance.OnJump += JumpState;
         PlayerInput.Instance.OnMove += Move;
+        PlayerInput.Instance.OnFast += Fast;
+        PlayerInput.Instance.OffFast += NotFast;
         if (!_player.CheckGround())
         {
             _player.Acceleration(0);
             _player.Rigidbody.velocity = _player.transform.TransformDirection(_moveVector) * _moveSpeed + new Vector3(0, _player.Rigidbody.velocity.y/1.1f, 0);
         }
+    }
+
+    private void NotFast()
+    {
+        _moveSpeed = _walkSpeed;
+    }
+
+    private void Fast()
+    {
+        _moveSpeed = _FastSpeed;
     }
 
     public override void UpdateState()

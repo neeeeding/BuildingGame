@@ -10,6 +10,8 @@ public class PlayerInput : Singleton<PlayerInput>
     public Action<Vector2> OnMove;
     public Action OnJump;
     public Action OnClickMouse;
+    public Action OnFast;
+    public Action OffFast;
 
     private void Awake()
     {
@@ -17,7 +19,20 @@ public class PlayerInput : Singleton<PlayerInput>
         playerInput.PlayerInputAction.Enable();
         playerInput.PlayerInputAction.Jump.performed += Jump;
         playerInput.PlayerInputAction.ClickAction.performed += Click;
+        playerInput.PlayerInputAction.Speed.performed += Fast;
+        playerInput.PlayerInputAction.Speed.canceled += NotFast;
     }
+
+    private void NotFast(InputAction.CallbackContext obj)
+    {
+        OffFast?.Invoke();
+    }
+
+    private void Fast(InputAction.CallbackContext obj)
+    {
+        OnFast?.Invoke();
+    }
+
     private void Click(InputAction.CallbackContext obj)
     {
         OnClickMouse?.Invoke();
