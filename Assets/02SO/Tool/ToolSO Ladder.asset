@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7858a3d53527b354ba9a4732db1ea2d0, type: 3}
-  m_Name: ToolSO 1
+  m_Name: ToolSO Ladder
   m_EditorClassIdentifier: 
-  toolName: Excavator
-  type: 0
+  toolName: Ladder
+  type: 1
   isUse: 0
-  toolImage: {fileID: 21300000, guid: dc6303942effa8742a703149ca07bfd1, type: 3}
+  toolImage: {fileID: 21300000, guid: 3d927ad45a58c9b4e8d39c71897940b1, type: 3}

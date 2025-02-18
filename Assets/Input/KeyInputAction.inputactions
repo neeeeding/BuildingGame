@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Speed",
+                    "type": "Button",
+                    "id": "cbdce23e-3f4c-4b05-9645-cf38286a8da0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -174,6 +183,28 @@
                     "processors": "",
                     "groups": ";PC",
                     "action": "ClickAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a32f0b9b-aa4f-4434-b4ab-b32d4c80cae9",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC;MOBILE",
+                    "action": "Speed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d26630b1-18bc-47f5-8cae-7c078b996a76",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "Speed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
