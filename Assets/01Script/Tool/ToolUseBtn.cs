@@ -72,15 +72,21 @@ public class ToolUseBtn : MonoBehaviour
         }
         else if(so.type == ToolType.rotateTool)
         {
-            yBtn.SetActive(true);
-            xBtn.SetActive(true);
-
-            GameObject toolPrepabs = Instantiate(tool, player.transform); //미리보기를 생성
-            toolPrepabs.SetActive(true);
-            this.tool = toolPrepabs;
-
-            toolAngle = Quaternion.identity;
+            ToolTypeRotate();
         }
+    }
+
+    private void ToolTypeRotate()
+    {
+        yBtn.SetActive(true);
+        xBtn.SetActive(true);
+
+        GameObject toolPrepabs = Instantiate(tool, player.transform); //미리보기를 생성
+        toolPrepabs.SetActive(true);
+        this.tool = toolPrepabs;
+        this.tool.GetComponent<Collider>().enabled = false;
+
+        toolAngle = Quaternion.identity;
     }
 
     private Vector3 ToolPosition() //미리 보기 도구의 위치
@@ -99,6 +105,7 @@ public class ToolUseBtn : MonoBehaviour
 
         GameObject tool = Instantiate(this.tool); //나중에 부모 결정 (점수계산을 위해 단계별로 할 것인지 아님 싸그리 모아 둘건지)
         tool.SetActive(true);
+        tool.GetComponent<Collider>().enabled = true;
         tool.transform.position = this.tool.transform.position;
         tool.transform.rotation = toolAngle;
     }
