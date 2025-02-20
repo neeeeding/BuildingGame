@@ -16,5 +16,5 @@ public class ToolSO : ScriptableObject
 
 public enum ToolType
 {
-    car, rotateTool, soil, clcikTool
+    car, rotateTool, soil, clcikTool, delete
 }

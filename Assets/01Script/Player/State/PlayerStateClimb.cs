@@ -16,6 +16,12 @@ public class PlayerStateClimb : PlayerState
 
         PlayerInput.Instance.OnJump += JumpState;
         PlayerInput.Instance.OnMove += Move;
+        ToolUseBtn.OnUseTool += UseTool;
+    }
+
+    private void UseTool()
+    {
+        _stateMachin.ChangeState(PlayerStateEnum.Use);
     }
 
     public override void UpdateState()
@@ -52,5 +58,6 @@ public class PlayerStateClimb : PlayerState
         base.Exit();
         PlayerInput.Instance.OnJump -= JumpState;
         PlayerInput.Instance.OnMove -= Move;
+        ToolUseBtn.OnUseTool -= UseTool;
     }
 }

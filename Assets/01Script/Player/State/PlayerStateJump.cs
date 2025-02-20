@@ -17,6 +17,12 @@ public class PlayerStateJump : PlayerState
 
         _player.Rigidbody.AddForce(Vector3.up * _JumpSpeed, ForceMode.Impulse);
         PlayerInput.Instance.OnMove += Move;
+        ToolUseBtn.OnUseTool += UseTool;
+    }
+
+    private void UseTool()
+    {
+        _stateMachin.ChangeState(PlayerStateEnum.Use);
     }
 
     public override void UpdateState()
@@ -50,5 +56,6 @@ public class PlayerStateJump : PlayerState
     {
         base.Exit();
         PlayerInput.Instance.OnMove -= Move;
+        ToolUseBtn.OnUseTool -= UseTool;
     }
 }

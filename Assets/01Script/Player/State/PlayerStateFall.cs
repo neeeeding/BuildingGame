@@ -13,6 +13,12 @@ public class PlayerStateFall : PlayerState
         base.Enter();
         _player.Acceleration(0);
         PlayerInput.Instance.OnMove += Move;
+        ToolUseBtn.OnUseTool += UseTool;
+    }
+
+    private void UseTool()
+    {
+        _stateMachin.ChangeState(PlayerStateEnum.Use);
     }
 
     public override void UpdateState()
@@ -52,5 +58,6 @@ public class PlayerStateFall : PlayerState
     {
         base.Exit();
         PlayerInput.Instance.OnMove -= Move;
+        ToolUseBtn.OnUseTool -= UseTool;
     }
 }

@@ -23,11 +23,17 @@ public class PlayerStateWalk : PlayerState
         PlayerInput.Instance.OnMove += Move;
         PlayerInput.Instance.OnFast += Fast;
         PlayerInput.Instance.OffFast += NotFast;
+        ToolUseBtn.OnUseTool += UseTool;
         if (!_player.CheckGround())
         {
             _player.Acceleration(0);
             _player.Rigidbody.velocity = _player.transform.TransformDirection(_moveVector) * _moveSpeed + new Vector3(0, _player.Rigidbody.velocity.y/1.1f, 0);
         }
+    }
+
+    private void UseTool()
+    {
+        _stateMachin.ChangeState(PlayerStateEnum.Use);
     }
 
     private void NotFast()
@@ -83,6 +89,7 @@ public class PlayerStateWalk : PlayerState
         base.Exit();
         PlayerInput.Instance.OnJump -= JumpState;
         PlayerInput.Instance.OnMove -= Move;
+        ToolUseBtn.OnUseTool -= UseTool;
     }
 
 }

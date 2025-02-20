@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
         stateMachin.AddState(PlayerStateEnum.Fall,new PlayerStateFall("Fall", stateMachin, this));
         stateMachin.AddState(PlayerStateEnum.climb,new PlayerStateClimb("Climb", stateMachin, this));
         //stateMachin.AddState(PlayerStateEnum.PickUp,new PlayerStatePickUp("PickUp", stateMachin, this));
-        //stateMachin.AddState(PlayerStateEnum.Use,new PlayerStateUse("Use", stateMachin, this));
+        stateMachin.AddState(PlayerStateEnum.Use,new PlayerStateUse("Use", stateMachin, this));
         stateMachin.Init(PlayerStateEnum.Idle);
         currentState = stateMachin.currentState.animationName;
 
