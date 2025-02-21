@@ -20,27 +20,31 @@ public class ToolCard : MonoBehaviour
     {
         _myImage = GetComponent<Image>();
         toolType.isUse = false;
-        realTool.SetActive(false);
-        player = GameObject.FindGameObjectWithTag("Player");
+        if(toolType.type != ToolType.delete) //지우기만 아니면
+        {
+            realTool.SetActive(true);
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
     private void Start()
     {
-        _myImage.sprite = toolType.toolImage;
+        if(toolType.type != ToolType.delete)
+         _myImage.sprite = toolType.toolImage;
         NotUse();
         isUseTool = false;
     }
 
-    public void ClickTool()
+    public void ClickTool() //도구(버튼) 누를 때
     {
-        if (!toolType.isUse && !isUseTool) UseTool();
-        else if (toolType.isUse && isUseTool) NotUse();
-        else return;
+        if (!toolType.isUse && !isUseTool) UseTool(); //사용
+        else if (toolType.isUse && isUseTool) NotUse(); //비활성
+        else return; //사용 중인데 다른 도구를 누름
 
         toolType.isUse = !toolType.isUse;
         isUseTool = !isUseTool;
     }
 
-    public void NotUse()
+    public void NotUse() //도구 비활성
     {
         _myImage.color = Color.white;
 
@@ -53,13 +57,13 @@ public class ToolCard : MonoBehaviour
         }
     }
 
-    public void UseTool() //사용 버튼 활성화
+    public void UseTool() //사용 버튼을 활성화
     {
         _myImage.color = new Color(95 / 225f, 95 / 225f, 95 / 225f, 1);
 
         toolBtnUse?.Invoke(toolType, realTool);
 
-        if (toolType.type == ToolType.car)
+        if (toolType.type == ToolType.car) //차 타입이라면
         {
             realTool.SetActive(true);
             realTool.transform.SetParent(player.transform, false);

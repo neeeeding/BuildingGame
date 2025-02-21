@@ -6,7 +6,8 @@ using System;
 
 public class ToolUseBtn : MonoBehaviour
 {
-    public static Action OnUseTool;
+    public static Action OnUseTool; //설치 함
+    public static Action OnNotUse; //설치 안함
 
     private Image btnImage; //도구 사용 버튼 이미지
     private GameObject tool; //실제 도구 오브젝트
@@ -32,7 +33,7 @@ public class ToolUseBtn : MonoBehaviour
 
     private void Update()
     {
-        if (toolSO != null && toolSO.type != ToolType.car)
+        if (toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete) //so가 널이거나 차이거나 지우기가 아니라면
         {
             tool.transform.localPosition = ToolPosition();
             tool.transform.localRotation = Quaternion.Inverse(player.transform.rotation) * toolAngle; //플레이어가 돌 때 같이 돌아버린걸로 보여서
@@ -41,7 +42,7 @@ public class ToolUseBtn : MonoBehaviour
             mousePoint = new Vector2(Mathf.Clamp(Input.mousePosition.x, 0, 1920), Mathf.Clamp(Input.mousePosition.y, 0, 1080));
             if (Input.GetMouseButtonDown(0) && mousePoint.y >= 250)
             {
-                UseTool();
+                StartCoroutine(UseTool());
             }
         }
     }
@@ -65,18 +66,22 @@ public class ToolUseBtn : MonoBehaviour
     {
         this.tool = tool;
         toolSO = so;
-        if(so.type == ToolType.car)
+        if(so.type == ToolType.car) //차일 때
         {
             btnImage.gameObject.SetActive(true);
             btnImage.sprite = so.toolImage;
         }
-        else if(so.type == ToolType.rotateTool)
+        else if(so.type == ToolType.rotateTool) //도는 도구일 때
         {
             ToolTypeRotate();
         }
+        else if(so.type == ToolType.delete) //지우는 도구일 때
+        {
+            DeleteTool.canDelete = true;
+        }
     }
 
-    private void ToolTypeRotate()
+    private void ToolTypeRotate() //도는 도구일 때
     {
         yBtn.SetActive(true);
         xBtn.SetActive(true);
@@ -99,7 +104,7 @@ public class ToolUseBtn : MonoBehaviour
         return tool.transform.parent.InverseTransformPoint(worldMousePos);
     }
 
-    private void UseTool() //도구 설치
+    private IEnumerator UseTool() //도구 설치
     {
         OnUseTool?.Invoke();
 
@@ -108,6 +113,10 @@ public class ToolUseBtn : MonoBehaviour
         tool.GetComponent<Collider>().enabled = true;
         tool.transform.position = this.tool.transform.position;
         tool.transform.rotation = toolAngle;
+
+        yield return new WaitForSeconds(1.1f);
+        OnNotUse?.Invoke();
+
     }
 
     private void NotActiveBtn() //도구 비활성화
@@ -123,6 +132,7 @@ public class ToolUseBtn : MonoBehaviour
 
         tool = null;
         toolSO = null;
+        DeleteTool.canDelete = false;
     }
 
     private void OnDisable()

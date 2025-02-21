@@ -14,6 +14,7 @@ public class PlayerStateUse : PlayerState
         base.Enter();
         PlayerInput.Instance.OnJump += JumpState;
         PlayerInput.Instance.OnMove += Move;
+        ToolUseBtn.OnNotUse += Idle;
     }
 
     public override void UpdateState()
@@ -44,10 +45,16 @@ public class PlayerStateUse : PlayerState
         }
     }
 
+    private void Idle()
+    {
+        _stateMachin.ChangeState(PlayerStateEnum.Idle);
+    }
+
     public override void Exit()
     {
         base.Exit();
         PlayerInput.Instance.OnJump -= JumpState;
         PlayerInput.Instance.OnMove -= Move;
+        ToolUseBtn.OnNotUse -= Idle;
     }
 }
