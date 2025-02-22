@@ -20,12 +20,22 @@ public class ToolCard : MonoBehaviour
     {
         _myImage = GetComponent<Image>();
         toolType.isUse = false;
+
         if(toolType.type != ToolType.delete) //지우기만 아니면
         {
             realTool.SetActive(true);
             player = GameObject.FindGameObjectWithTag("Player");
         }
+
+        CompleteBtn.CurrentStep += ShowToolBtn;
     }
+
+    private void ShowToolBtn(StepType step)
+    {
+        gameObject.SetActive(Array.Exists(toolType.useStep, i => i.Equals( step)));
+        print($"{gameObject.name} : {step} , {Array.Exists(toolType.useStep, i => i.Equals(step))}");
+    }
+
     private void Start()
     {
         if(toolType.type != ToolType.delete)
@@ -68,5 +78,7 @@ public class ToolCard : MonoBehaviour
             realTool.SetActive(true);
             realTool.transform.SetParent(player.transform, false);
         }
+
+        CompleteBtn.CurrentStep -= ShowToolBtn;
     }
 }

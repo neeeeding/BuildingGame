@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ToolSO Ladder
   m_EditorClassIdentifier: 
   toolName: Ladder
+  useStep: 0100000000000000
   type: 1
   isUse: 0
   toolImage: {fileID: 21300000, guid: 3d927ad45a58c9b4e8d39c71897940b1, type: 3}

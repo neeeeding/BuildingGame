@@ -9,18 +9,19 @@ using System.ComponentModel;
 public class CompleteBtn : MonoBehaviour
 {
     private List<StepType> Steps;
-    [SerializeField] private int CurrentNumber; //실질적인 현재 단계 (번호)
+    private int CurrentNumber; //실질적인 현재 단계 (번호)
     private TextMeshProUGUI btnText;
 
-    public static Action<StepType> CurrentStep;
+    public static Action<StepType> CurrentStep; //현재 단계를 알려줌
 
     private void Start()
     {
         AddStep();
         CurrentNumber = 0;
         btnText = GetComponentInChildren<TextMeshProUGUI>();
+        CurrentStep?.Invoke(Steps[CurrentNumber]);
     }
-    public void ClcikComplete()
+    public void ClcikComplete() //버튼 클릭할 때
     {
         CurrentNumber += CurrentNumber < Steps.Count - 1? 1 : 0;
 
@@ -33,15 +34,16 @@ public class CompleteBtn : MonoBehaviour
         {
             ScoreCount();
             btnText.text = StepName(Steps[CurrentNumber]);
+            CurrentStep?.Invoke(Steps[CurrentNumber]);
         }
     }
 
-    private void AddStep()
+    private void AddStep() //모든 거 넣기
     {
         Steps = Enum.GetValues(typeof(StepType)).Cast<StepType>().ToList();
     }
 
-    private string StepName(StepType step)
+    private string StepName(StepType step) //이름을 알려줌
     {
         var field = step.GetType().GetField(step.ToString());
         var attr = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));

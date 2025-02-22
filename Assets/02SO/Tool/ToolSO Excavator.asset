@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ToolSO Excavator
   m_EditorClassIdentifier: 
   toolName: Excavator
+  useStep: 00000000
   type: 0
   isUse: 0
   toolImage: {fileID: 21300000, guid: dc6303942effa8742a703149ca07bfd1, type: 3}
