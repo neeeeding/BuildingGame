@@ -10,8 +10,9 @@ public class ToolUseBtn : MonoBehaviour
     public static Action OnNotUse; //설치 안함
 
     private Image btnImage; //도구 사용 버튼 이미지
-    private GameObject tool; //실제 도구 오브젝트
+    private GameObject toolObj; //실제 도구 오브젝트
     private ToolSO toolSO; //도구에 대한 정보
+    private ToolCard card;
 
     [SerializeField] private GameObject justUseBtn; //도구 사용 버튼
     [SerializeField] private GameObject yBtn; //y회전
@@ -20,6 +21,7 @@ public class ToolUseBtn : MonoBehaviour
     private Quaternion toolAngle; //도구 회전 각
 
     private GameObject player; //플레이어
+    [SerializeField] private GameObject toolKeep; //도구 저장하는 곳
     
     private Vector2 mousePoint; //마우스 위치
 
@@ -35,8 +37,8 @@ public class ToolUseBtn : MonoBehaviour
     {
         if (toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete) //so가 널이거나 차이거나 지우기가 아니라면
         {
-            tool.transform.localPosition = ToolPosition();
-            tool.transform.localRotation = Quaternion.Inverse(player.transform.rotation) * toolAngle; //플레이어가 돌 때 같이 돌아버린걸로 보여서
+            toolObj.transform.localPosition = ToolPosition();
+            toolObj.transform.localRotation = Quaternion.Inverse(player.transform.rotation) * toolAngle; //플레이어가 돌 때 같이 돌아버린걸로 보여서
 
 
             mousePoint = new Vector2(Mathf.Clamp(Input.mousePosition.x, 0, 1920), Mathf.Clamp(Input.mousePosition.y, 0, 1080));
@@ -62,10 +64,11 @@ public class ToolUseBtn : MonoBehaviour
         toolAngle = toolAngle * Quaternion.Euler(0, 90, 0);
     }
 
-    private void ActiveBtn(ToolSO so, GameObject tool) //버튼 활성화 될 때
+    private void ActiveBtn(ToolSO so, GameObject tool, ToolCard toolCard) //버튼 활성화 될 때
     {
-        this.tool = tool;
+        toolObj = tool;
         toolSO = so;
+        card = toolCard;
         if(so.type == ToolType.car) //차일 때
         {
             btnImage.gameObject.SetActive(true);
@@ -86,10 +89,10 @@ public class ToolUseBtn : MonoBehaviour
         yBtn.SetActive(true);
         xBtn.SetActive(true);
 
-        GameObject toolPrepabs = Instantiate(tool, player.transform); //미리보기를 생성
+        GameObject toolPrepabs = Instantiate(toolObj, player.transform); //미리보기를 생성
         toolPrepabs.SetActive(true);
-        this.tool = toolPrepabs;
-        this.tool.GetComponent<Collider>().enabled = false;
+        toolObj = toolPrepabs;
+        toolObj.GetComponent<Collider>().enabled = false;
 
         toolAngle = Quaternion.identity;
     }
@@ -101,22 +104,33 @@ public class ToolUseBtn : MonoBehaviour
         float distance = 3;
 
         Vector3 worldMousePos = ray.GetPoint(distance);
-        return tool.transform.parent.InverseTransformPoint(worldMousePos);
+        return toolObj.transform.parent.InverseTransformPoint(worldMousePos);
     }
 
     private IEnumerator UseTool() //도구 설치
     {
         OnUseTool?.Invoke();
 
-        GameObject tool = Instantiate(this.tool); //나중에 부모 결정 (점수계산을 위해 단계별로 할 것인지 아님 싸그리 모아 둘건지)
-        tool.SetActive(true);
-        tool.GetComponent<Collider>().enabled = true;
-        tool.transform.position = this.tool.transform.position;
+        GameObject tool;
+
+        if (card.toolList.Count <= 0)
+        {
+            tool = card.AddTool();
+            tool.SetActive(true);
+        }
+        else
+        {
+            tool = card.toolList[0];
+            card.toolList.RemoveAt(0);
+            tool.SetActive(true);
+        }
+        //나중에 부모 결정 (점수계산을 위해 단계별로 할 것인지 아님 싸그리 모아 둘건지)
+        tool.transform.SetParent(toolKeep.transform);
+        tool.transform.position = toolObj.transform.position;
         tool.transform.rotation = toolAngle;
 
         yield return new WaitForSeconds(1.1f);
         OnNotUse?.Invoke();
-
     }
 
     private void NotActiveBtn() //도구 비활성화
@@ -125,12 +139,14 @@ public class ToolUseBtn : MonoBehaviour
         yBtn.SetActive(false);
         xBtn.SetActive(false);
 
-        if(toolSO != null && toolSO.type != ToolType.car)
+        if(toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete)
         {
-            Destroy(tool);
+            card.toolList.Add(toolObj);
+            toolObj.SetActive(false);
+            toolObj.transform.SetParent(card.transform, false);
         }
 
-        tool = null;
+        toolObj = null;
         toolSO = null;
         DeleteTool.canDelete = false;
     }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class DeleteTool : MonoBehaviour
 {
+    public ToolCard myRoot;
+
     public static bool canDelete; //ture : 지워짐, false : 못 지움
     private void Awake()
     {
@@ -25,7 +27,9 @@ public class DeleteTool : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
         {
-            Destroy(gameObject);
+            myRoot.toolList.Add(gameObject);
+            gameObject.SetActive(false);
+            gameObject.transform.SetParent(myRoot.transform, false);
         }
     }
 }
