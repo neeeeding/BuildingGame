@@ -20,7 +20,7 @@ public class PlayerStateJump : PlayerState
         ToolUseBtn.OnUseTool += UseTool;
     }
 
-    private void UseTool()
+    private void UseTool(ToolSO tool)
     {
         _stateMachin.ChangeState(PlayerStateEnum.Use);
     }

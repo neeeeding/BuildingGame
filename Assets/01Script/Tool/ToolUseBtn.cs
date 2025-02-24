@@ -6,8 +6,10 @@ using System;
 
 public class ToolUseBtn : MonoBehaviour
 {
-    public static Action OnUseTool; //설치 함
+    public static Action<ToolSO> OnUseTool; //설치 함
     public static Action OnNotUse; //설치 안함
+
+    private bool cantClick; // true : 클릭해도 설치를 못함. (UI를 누를 때), false : 설치 가능
 
     private Image btnImage; //도구 사용 버튼 이미지
     private GameObject toolObj; //실제 도구 오브젝트
@@ -20,7 +22,6 @@ public class ToolUseBtn : MonoBehaviour
 
     private Quaternion toolAngle; //도구 회전 각
 
-    private GameObject player; //플레이어
     [SerializeField] private GameObject toolKeep; //도구 저장하는 곳
     
     private Vector2 mousePoint; //마우스 위치
@@ -30,16 +31,14 @@ public class ToolUseBtn : MonoBehaviour
         btnImage = justUseBtn.GetComponent<Image>();
         ToolCard.toolBtnUse += ActiveBtn;
         ToolCard.toolBtnNotUse += NotActiveBtn;
-        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
     {
-        if (toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete) //so가 널이거나 차이거나 지우기가 아니라면
+        if (toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete && toolSO.type != ToolType.soil) //so가 널이거나 차이거나 지우기가 아니라면
         {
             toolObj.transform.localPosition = ToolPosition();
-            toolObj.transform.localRotation = Quaternion.Inverse(player.transform.rotation) * toolAngle; //플레이어가 돌 때 같이 돌아버린걸로 보여서
-
+            toolObj.transform.localRotation = Quaternion.Inverse(StageManager.Instance.Player.transform.rotation) * toolAngle; //플레이어가 돌 때 같이 돌아버린걸로 보여서
 
             mousePoint = new Vector2(Mathf.Clamp(Input.mousePosition.x, 0, 1920), Mathf.Clamp(Input.mousePosition.y, 0, 1080));
             if (Input.GetMouseButtonDown(0) && mousePoint.y >= 250)
@@ -47,19 +46,33 @@ public class ToolUseBtn : MonoBehaviour
                 StartCoroutine(UseTool());
             }
         }
+        if (toolSO != null && Input.GetMouseButtonDown(0) && toolSO.type == ToolType.soil)
+        {
+            OnUseTool?.Invoke(toolSO);
+        }
+    }
+
+    public void CantClick() //다른 UI누를 때
+    {
+        cantClick = false;
+    }
+
+    public void CanClick()
+    {
+        cantClick = true;
     }
 
     public void JustBtnClick()
     {
-
+        OnUseTool?.Invoke(toolSO);
     }
 
-    public void XBtnClick()
+    public void XBtnClick() //x로 돌기
     {
         toolAngle = toolAngle * Quaternion.Euler(90, 0, 0);
     }
 
-    public void YBtnClcik()
+    public void YBtnClcik() //y로 돌기
     {
         toolAngle = toolAngle * Quaternion.Euler(0, 90, 0);
     }
@@ -89,7 +102,7 @@ public class ToolUseBtn : MonoBehaviour
         yBtn.SetActive(true);
         xBtn.SetActive(true);
 
-        GameObject toolPrepabs = Instantiate(toolObj, player.transform); //미리보기를 생성
+        GameObject toolPrepabs = Instantiate(toolObj, StageManager.Instance.Player.transform); //미리보기를 생성
         toolPrepabs.SetActive(true);
         toolObj = toolPrepabs;
         toolObj.GetComponent<Collider>().enabled = false;
@@ -101,7 +114,7 @@ public class ToolUseBtn : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        float distance = 3;
+        float distance = 1;
 
         Vector3 worldMousePos = ray.GetPoint(distance);
         return toolObj.transform.parent.InverseTransformPoint(worldMousePos);
@@ -109,28 +122,31 @@ public class ToolUseBtn : MonoBehaviour
 
     private IEnumerator UseTool() //도구 설치
     {
-        OnUseTool?.Invoke();
-
-        GameObject tool;
-
-        if (card.toolList.Count <= 0)
+        if (!cantClick)
         {
-            tool = card.AddTool();
-            tool.SetActive(true);
-        }
-        else
-        {
-            tool = card.toolList[0];
-            card.toolList.RemoveAt(0);
-            tool.SetActive(true);
-        }
-        //나중에 부모 결정 (점수계산을 위해 단계별로 할 것인지 아님 싸그리 모아 둘건지)
-        tool.transform.SetParent(toolKeep.transform);
-        tool.transform.position = toolObj.transform.position;
-        tool.transform.rotation = toolAngle;
+            OnUseTool?.Invoke(toolSO);
 
-        yield return new WaitForSeconds(1.1f);
-        OnNotUse?.Invoke();
+            GameObject tool;
+
+            if (card.toolList.Count <= 0)
+            {
+                tool = card.AddTool();
+                tool.SetActive(true);
+            }
+            else
+            {
+                tool = card.toolList[0];
+                card.toolList.RemoveAt(0);
+                tool.SetActive(true);
+            }
+            //나중에 부모 결정 (점수계산을 위해 단계별로 할 것인지 아님 싸그리 모아 둘건지)
+            tool.transform.SetParent(toolKeep.transform);
+            tool.transform.position = toolObj.transform.position;
+            tool.transform.rotation = toolAngle;
+
+            yield return new WaitForSeconds(1.1f);
+            OnNotUse?.Invoke();
+        }
     }
 
     private void NotActiveBtn() //도구 비활성화
@@ -139,7 +155,7 @@ public class ToolUseBtn : MonoBehaviour
         yBtn.SetActive(false);
         xBtn.SetActive(false);
 
-        if(toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete)
+        if(toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete && toolSO.type != ToolType.soil)
         {
             card.toolList.Add(toolObj);
             toolObj.SetActive(false);

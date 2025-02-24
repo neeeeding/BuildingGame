@@ -22,17 +22,14 @@ public class ToolCard : MonoBehaviour
     private bool activeList; // true : 삭제하거나 추가중, false : 아무것도 안함
     private float noUseTime; //이 도구를 사용하지 않은 시간
 
-    private GameObject player;
-
     private void Awake()
     {
         _myImage = GetComponent<Image>();
         toolType.isUse = false;
 
-        if(toolType.type != ToolType.delete) //지우기만 아니면
+        if(toolType.type != ToolType.delete && toolType.type != ToolType.soil) //지우기만 아니면
         {
             realTool.SetActive(true);
-            player = GameObject.FindGameObjectWithTag("Player");
         }
 
         CompleteBtn.CurrentStep += ShowToolBtn;
@@ -167,7 +164,7 @@ public class ToolCard : MonoBehaviour
         if (toolType.type == ToolType.car) //차 타입이라면
         {
             realTool.SetActive(true);
-            realTool.transform.SetParent(player.transform, false);
+            realTool.transform.SetParent(StageManager.Instance.Player.transform, false);
         }
 
         CompleteBtn.CurrentStep -= ShowToolBtn;

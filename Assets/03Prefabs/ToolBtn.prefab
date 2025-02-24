@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -147,3 +147,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   realTool: {fileID: 0}
   toolType: {fileID: 11400000, guid: 26cfc8ccfe6048e489867e31377f4352, type: 2}
+  toolList: []
+  ListMax: 50
+  ListMin: 10
