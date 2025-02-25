@@ -250,6 +250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 46505711}
   - component: {fileID: 46505712}
+  - component: {fileID: 46505713}
   m_Layer: 5
   m_Name: ToolUseBtn
   m_TagString: Untagged
@@ -295,6 +296,51 @@ MonoBehaviour:
   yBtn: {fileID: 650067815}
   xBtn: {fileID: 824203333}
   toolKeep: {fileID: 382523158}
+--- !u!114 &46505713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46505710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 46505712}
+          m_TargetAssemblyTypeName: ToolUseBtn, Assembly-CSharp
+          m_MethodName: CantClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 46505712}
+          m_TargetAssemblyTypeName: ToolUseBtn, Assembly-CSharp
+          m_MethodName: CanClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &137552357
 GameObject:
   m_ObjectHideFlags: 0
@@ -2805,6 +2851,7 @@ GameObject:
   m_Component:
   - component: {fileID: 923601202}
   - component: {fileID: 923601203}
+  - component: {fileID: 923601204}
   m_Layer: 5
   m_Name: MiniMap
   m_TagString: Untagged
@@ -2847,6 +2894,51 @@ MonoBehaviour:
   blueprintImage: {fileID: 11400000, guid: a0c16cb46b0e74444a9e61133764374e, type: 2}
   blueprint: {fileID: 208994830}
   miniMap: {fileID: 552200395}
+--- !u!114 &923601204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923601201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 46505712}
+          m_TargetAssemblyTypeName: ToolUseBtn, Assembly-CSharp
+          m_MethodName: CantClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 46505712}
+          m_TargetAssemblyTypeName: ToolUseBtn, Assembly-CSharp
+          m_MethodName: CanClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &966243878
 GameObject:
   m_ObjectHideFlags: 0
@@ -3180,6 +3272,7 @@ GameObject:
   - component: {fileID: 1177234204}
   - component: {fileID: 1177234206}
   - component: {fileID: 1177234205}
+  - component: {fileID: 1177234207}
   m_Layer: 5
   m_Name: LeftStick
   m_TagString: Untagged
@@ -3245,6 +3338,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1177234203}
   m_CullTransparentMesh: 1
+--- !u!114 &1177234207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177234203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 46505712}
+          m_TargetAssemblyTypeName: ToolUseBtn, Assembly-CSharp
+          m_MethodName: CantClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 46505712}
+          m_TargetAssemblyTypeName: ToolUseBtn, Assembly-CSharp
+          m_MethodName: CanClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1208655623
 GameObject:
   m_ObjectHideFlags: 0
@@ -5354,6 +5492,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1520887581}
   - component: {fileID: 1520887582}
+  - component: {fileID: 1520887583}
   m_Layer: 5
   m_Name: ToolBar
   m_TagString: Untagged
@@ -5397,6 +5536,51 @@ MonoBehaviour:
   basePosition: {fileID: 753025609}
   movePosition: {fileID: 2017041266}
   moveSpeed: 15
+--- !u!114 &1520887583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520887580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 46505712}
+          m_TargetAssemblyTypeName: ToolUseBtn, Assembly-CSharp
+          m_MethodName: CantClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 46505712}
+          m_TargetAssemblyTypeName: ToolUseBtn, Assembly-CSharp
+          m_MethodName: CanClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1526897353
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,8 +21,7 @@ public class PlayerStateWalk : PlayerState
         _player.Acceleration(5);
         PlayerInput.Instance.OnJump += JumpState;
         PlayerInput.Instance.OnMove += Move;
-        PlayerInput.Instance.OnFast += Fast;
-        PlayerInput.Instance.OffFast += NotFast;
+        PlayerInput.Instance.OnFast += fast => _moveSpeed = fast? _FastSpeed : _walkSpeed;
         ToolUseBtn.OnUseTool += UseTool;
         if (!_player.CheckGround())
         {
@@ -35,17 +34,6 @@ public class PlayerStateWalk : PlayerState
     {
         _stateMachin.ChangeState(PlayerStateEnum.Use);
     }
-
-    private void NotFast()
-    {
-        _moveSpeed = _walkSpeed;
-    }
-
-    private void Fast()
-    {
-        _moveSpeed = _FastSpeed;
-    }
-
     public override void UpdateState()
     {
         base.UpdateState();

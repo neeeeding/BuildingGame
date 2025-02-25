@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ClickAction",
+                    "name": "noRatate",
                     "type": "Button",
                     "id": "295ebbb7-d9a9-470e-8b10-43e1582bd28f",
                     "expectedControlType": "",
@@ -170,7 +170,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";PC",
+                    "groups": ";PC;MOBILE",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -178,11 +178,11 @@
                 {
                     "name": "",
                     "id": "b60bdf53-53eb-4bf1-8bcd-eb0ced1200d4",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/ctrl",
                     "interactions": "",
                     "processors": "",
                     "groups": ";PC",
-                    "action": "ClickAction",
+                    "action": "noRatate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

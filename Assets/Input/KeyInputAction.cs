@@ -46,7 +46,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ClickAction"",
+                    ""name"": ""noRatate"",
                     ""type"": ""Button"",
                     ""id"": ""295ebbb7-d9a9-470e-8b10-43e1582bd28f"",
                     ""expectedControlType"": """",
@@ -192,7 +192,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";PC"",
+                    ""groups"": "";PC;MOBILE"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -200,11 +200,11 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b60bdf53-53eb-4bf1-8bcd-eb0ced1200d4"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";PC"",
-                    ""action"": ""ClickAction"",
+                    ""action"": ""noRatate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -272,7 +272,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
         m_PlayerInputAction = asset.FindActionMap("PlayerInputAction", throwIfNotFound: true);
         m_PlayerInputAction_Move = m_PlayerInputAction.FindAction("Move", throwIfNotFound: true);
         m_PlayerInputAction_Jump = m_PlayerInputAction.FindAction("Jump", throwIfNotFound: true);
-        m_PlayerInputAction_ClickAction = m_PlayerInputAction.FindAction("ClickAction", throwIfNotFound: true);
+        m_PlayerInputAction_noRatate = m_PlayerInputAction.FindAction("noRatate", throwIfNotFound: true);
         m_PlayerInputAction_Speed = m_PlayerInputAction.FindAction("Speed", throwIfNotFound: true);
     }
 
@@ -342,7 +342,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
     private List<IPlayerInputActionActions> m_PlayerInputActionActionsCallbackInterfaces = new List<IPlayerInputActionActions>();
     private readonly InputAction m_PlayerInputAction_Move;
     private readonly InputAction m_PlayerInputAction_Jump;
-    private readonly InputAction m_PlayerInputAction_ClickAction;
+    private readonly InputAction m_PlayerInputAction_noRatate;
     private readonly InputAction m_PlayerInputAction_Speed;
     public struct PlayerInputActionActions
     {
@@ -350,7 +350,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
         public PlayerInputActionActions(@KeyInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerInputAction_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerInputAction_Jump;
-        public InputAction @ClickAction => m_Wrapper.m_PlayerInputAction_ClickAction;
+        public InputAction @noRatate => m_Wrapper.m_PlayerInputAction_noRatate;
         public InputAction @Speed => m_Wrapper.m_PlayerInputAction_Speed;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInputAction; }
         public void Enable() { Get().Enable(); }
@@ -367,9 +367,9 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @ClickAction.started += instance.OnClickAction;
-            @ClickAction.performed += instance.OnClickAction;
-            @ClickAction.canceled += instance.OnClickAction;
+            @noRatate.started += instance.OnNoRatate;
+            @noRatate.performed += instance.OnNoRatate;
+            @noRatate.canceled += instance.OnNoRatate;
             @Speed.started += instance.OnSpeed;
             @Speed.performed += instance.OnSpeed;
             @Speed.canceled += instance.OnSpeed;
@@ -383,9 +383,9 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @ClickAction.started -= instance.OnClickAction;
-            @ClickAction.performed -= instance.OnClickAction;
-            @ClickAction.canceled -= instance.OnClickAction;
+            @noRatate.started -= instance.OnNoRatate;
+            @noRatate.performed -= instance.OnNoRatate;
+            @noRatate.canceled -= instance.OnNoRatate;
             @Speed.started -= instance.OnSpeed;
             @Speed.performed -= instance.OnSpeed;
             @Speed.canceled -= instance.OnSpeed;
@@ -428,7 +428,7 @@ public partial class @KeyInputAction: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnClickAction(InputAction.CallbackContext context);
+        void OnNoRatate(InputAction.CallbackContext context);
         void OnSpeed(InputAction.CallbackContext context);
     }
 }

@@ -40,8 +40,7 @@ public class ToolUseBtn : MonoBehaviour
             toolObj.transform.localPosition = ToolPosition();
             toolObj.transform.localRotation = Quaternion.Inverse(StageManager.Instance.Player.transform.rotation) * toolAngle; //플레이어가 돌 때 같이 돌아버린걸로 보여서
 
-            mousePoint = new Vector2(Mathf.Clamp(Input.mousePosition.x, 0, 1920), Mathf.Clamp(Input.mousePosition.y, 0, 1080));
-            if (Input.GetMouseButtonDown(0) && mousePoint.y >= 250)
+            if (Input.GetMouseButtonDown(0))
             {
                 StartCoroutine(UseTool());
             }
@@ -54,12 +53,12 @@ public class ToolUseBtn : MonoBehaviour
 
     public void CantClick() //다른 UI누를 때
     {
-        cantClick = false;
+        cantClick = true;
     }
 
     public void CanClick()
     {
-        cantClick = true;
+        cantClick = false;
     }
 
     public void JustBtnClick()

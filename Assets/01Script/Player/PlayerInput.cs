@@ -9,33 +9,20 @@ public class PlayerInput : Singleton<PlayerInput>
     private KeyInputAction playerInput;
     public Action<Vector2> OnMove;
     public Action OnJump;
-    public Action OnClickMouse;
-    public Action OnFast;
-    public Action OffFast;
+    public Action<bool> OnRotate;
+    public Action<bool> OnFast;
 
     private void Awake()
     {
         playerInput = new KeyInputAction();
         playerInput.PlayerInputAction.Enable();
         playerInput.PlayerInputAction.Jump.performed += Jump;
-        playerInput.PlayerInputAction.ClickAction.performed += Click;
-        playerInput.PlayerInputAction.Speed.performed += Fast;
-        playerInput.PlayerInputAction.Speed.canceled += NotFast;
-    }
 
-    private void NotFast(InputAction.CallbackContext obj)
-    {
-        OffFast?.Invoke();
-    }
+        playerInput.PlayerInputAction.noRatate.performed += context => OnRotate?.Invoke(false);
+        playerInput.PlayerInputAction.noRatate.canceled += context => OnRotate?.Invoke(true) ;
 
-    private void Fast(InputAction.CallbackContext obj)
-    {
-        OnFast?.Invoke();
-    }
-
-    private void Click(InputAction.CallbackContext obj)
-    {
-        OnClickMouse?.Invoke();
+        playerInput.PlayerInputAction.Speed.performed += context => OnFast?.Invoke(true);
+        playerInput.PlayerInputAction.Speed.canceled += context => OnFast?.Invoke(false);
     }
 
     private void Update()

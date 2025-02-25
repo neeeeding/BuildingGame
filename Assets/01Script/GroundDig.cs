@@ -9,7 +9,7 @@ public class GroundDig : MonoBehaviour
     private TerrainData groundData;
     private int groundResolution;
 
-    [SerializeField]private float digDepth = 0.002f; // ∂•¿ª ∆» ±Ì¿Ã
+    [SerializeField]private float digDepth = 0.004f; // ∂•¿ª ∆» ±Ì¿Ã
     [SerializeField] private float digRadius = 0.05f;  // ∂•¿ª ∆» π›∞Ê
 
     private void Awake()
@@ -40,7 +40,7 @@ public class GroundDig : MonoBehaviour
         }
     }
 
-    private void ResetGround()
+    private void ResetGround() //√≥¿Ωø° ¥Ÿ √§øˆ ≥ı±‚
     {
         float baseDepth = digDepth;
         float baseRadius = digRadius;

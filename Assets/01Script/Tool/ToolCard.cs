@@ -123,6 +123,7 @@ public class ToolCard : MonoBehaviour
 
     private void ShowToolBtn(StepType step) //단계별 도구 보이기
     {
+        NotUse();
         gameObject.SetActive(Array.Exists(toolType.useStep, i => i.Equals( step)));
     }
 
@@ -166,7 +167,10 @@ public class ToolCard : MonoBehaviour
             realTool.SetActive(true);
             realTool.transform.SetParent(StageManager.Instance.Player.transform, false);
         }
+    }
 
+    private void OnDisable()
+    {
         CompleteBtn.CurrentStep -= ShowToolBtn;
     }
 }
