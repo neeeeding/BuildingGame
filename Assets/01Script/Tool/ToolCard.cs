@@ -17,8 +17,8 @@ public class ToolCard : MonoBehaviour
     private bool isTool; // true : 설치용 도구 , false : 그외의 도구
 
     public List<GameObject> toolList; //도구 리스트
-    [SerializeField]private float ListMax = 50f; //최대 수
-    [SerializeField]private float ListMin = 10f; // 최소 수
+    [SerializeField] private float ListMax = 50f; //최대 수
+    [SerializeField] private float ListMin = 10f; // 최소 수
     private bool activeList; // true : 삭제하거나 추가중, false : 아무것도 안함
     private float noUseTime; //이 도구를 사용하지 않은 시간
 
@@ -27,7 +27,7 @@ public class ToolCard : MonoBehaviour
         _myImage = GetComponent<Image>();
         toolType.isUse = false;
 
-        if(toolType.type != ToolType.delete && toolType.type != ToolType.soil) //지우기만 아니면
+        if (toolType.type != ToolType.delete && toolType.type != ToolType.soil) //지우기만 아니면
         {
             realTool.SetActive(true);
         }
@@ -53,17 +53,17 @@ public class ToolCard : MonoBehaviour
     {
         if (!activeList && gameObject.activeSelf && isTool) //도구가 비활성(생성,삭제 중이 아니거나 클릭 상태 아니면)이고 본인은 활성화 중일 때
         {
-            if(toolList.Count < ListMin && noUseTime < 60 * 5) //도구 수가 20보다 작고, 마지막 사용 시간이 5분 이하면
+            if (toolList.Count < ListMin && noUseTime < 60 * 5) //도구 수가 20보다 작고, 마지막 사용 시간이 5분 이하면
             {
                 StopAllCoroutines();
                 StartCoroutine(AddListTools(toolList.Count - ListMin));
             }
-            else if(toolList.Count >= ListMax) //도구 수가 50을 넘을 때
+            else if (toolList.Count >= ListMax) //도구 수가 50을 넘을 때
             {
                 StopAllCoroutines();
                 StartCoroutine(DeleteTools(ListMax));
             }
-            else if(toolList.Count >= 1 && noUseTime > 60 * 5) //도구가 1이상이고 마지막 사용 시간이 5분 이상이면
+            else if (toolList.Count >= 1 && noUseTime > 60 * 5) //도구가 1이상이고 마지막 사용 시간이 5분 이상이면
             {
                 DeleteTools(1);
             }
@@ -81,7 +81,7 @@ public class ToolCard : MonoBehaviour
         newTool.SetActive(false);
         newTool.transform.SetParent(transform, false);
 
-        if(newTool.TryGetComponent(out DeleteTool toolSC))
+        if (newTool.TryGetComponent(out DeleteTool toolSC))
         {
             toolSC.myRoot = this;
         }
@@ -109,7 +109,7 @@ public class ToolCard : MonoBehaviour
     {
         activeList = true;
         float nowNum = 0;
-        while(nowNum++ >= num)
+        while (nowNum++ >= num)
         {
             GameObject Delete = toolList[0];
             toolList.RemoveAt(0);
@@ -124,7 +124,7 @@ public class ToolCard : MonoBehaviour
     private void ShowToolBtn(StepType step) //단계별 도구 보이기
     {
         NotUse();
-        gameObject.SetActive(Array.Exists(toolType.useStep, i => i.Equals( step)));
+        gameObject.SetActive((toolType.useStep & step) != 0);
     }
 
     public void ClickTool() //도구(버튼) 누를 때

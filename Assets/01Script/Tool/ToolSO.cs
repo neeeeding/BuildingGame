@@ -7,7 +7,7 @@ public class ToolSO : ScriptableObject
 {
     [SerializeField] private string toolName; //도구 이름(구분 용)
 
-    public StepType[] useStep; //도구 사용 가능한 단계들
+    public StepType useStep; //도구 사용 가능한 단계들
 
     public ToolType type; //도구 종류
 

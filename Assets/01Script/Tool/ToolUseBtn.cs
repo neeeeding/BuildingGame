@@ -23,8 +23,6 @@ public class ToolUseBtn : MonoBehaviour
     private Quaternion toolAngle; //도구 회전 각
 
     [SerializeField] private GameObject toolKeep; //도구 저장하는 곳
-    
-    private Vector2 mousePoint; //마우스 위치
 
     private void Awake()
     {
