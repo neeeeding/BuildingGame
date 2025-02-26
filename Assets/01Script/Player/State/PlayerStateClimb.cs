@@ -14,6 +14,8 @@ public class PlayerStateClimb : PlayerState
     {
         base.Enter();
 
+        _player.Rigidbody.useGravity = false;
+
         PlayerInput.Instance.OnJump += JumpState;
         PlayerInput.Instance.OnMove += Move;
         ToolUseBtn.OnUseTool += UseTool;
@@ -43,7 +45,7 @@ public class PlayerStateClimb : PlayerState
         if (value == Vector2.zero)
         {
             _moveVector = Vector3.zero;
-            _stateMachin.ChangeState(PlayerStateEnum.Idle);
+            //_stateMachin.ChangeState(PlayerStateEnum.Idle);
         }
         _moveVector = new Vector3(0, value.y,0);
     }
@@ -56,6 +58,9 @@ public class PlayerStateClimb : PlayerState
     public override void Exit()
     {
         base.Exit();
+
+        _player.Rigidbody.useGravity = true;
+
         PlayerInput.Instance.OnJump -= JumpState;
         PlayerInput.Instance.OnMove -= Move;
         ToolUseBtn.OnUseTool -= UseTool;

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7907760848586785097}
   - component: {fileID: 3285602583710971779}
   - component: {fileID: 5045672878452543167}
+  - component: {fileID: -1147529911251676472}
   m_Layer: 0
   m_Name: Pipe 1 4
   m_TagString: Untagged
@@ -71,6 +72,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myRoot: {fileID: 0}
+--- !u!54 &-1147529911251676472
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9083171890764775604}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &3843403405647271135
 PrefabInstance:
   m_ObjectHideFlags: 0

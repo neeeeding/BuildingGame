@@ -9,6 +9,9 @@ public class ToolUseBtn : MonoBehaviour
     public static Action<ToolSO> OnUseTool; //설치 함
     public static Action OnNotUse; //설치 안함
 
+    public static Action<bool> OnMark; //즐겨찾기
+    private bool AllMark; //true : 즐겨 찾기, false : 즐겨 찾기 아님.
+
     private bool cantClick; // true : 클릭해도 설치를 못함. (UI를 누를 때), false : 설치 가능
 
     private Image btnImage; //도구 사용 버튼 이미지
@@ -29,11 +32,12 @@ public class ToolUseBtn : MonoBehaviour
         btnImage = justUseBtn.GetComponent<Image>();
         ToolCard.toolBtnUse += ActiveBtn;
         ToolCard.toolBtnNotUse += NotActiveBtn;
+        AllMark = false;
     }
 
     private void Update()
     {
-        if (toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete && toolSO.type != ToolType.soil) //so가 널이거나 차이거나 지우기가 아니라면
+        if (toolSO != null && (toolSO.type == ToolType.rotateTool || toolSO.type == ToolType.clcikTool)) //so가 널이거나 차이거나 지우기,흙,묶기가 아니라면
         {
             toolObj.transform.localPosition = ToolPosition();
             toolObj.transform.localRotation = Quaternion.Inverse(StageManager.Instance.Player.transform.rotation) * toolAngle; //플레이어가 돌 때 같이 돌아버린걸로 보여서
@@ -43,10 +47,16 @@ public class ToolUseBtn : MonoBehaviour
                 StartCoroutine(UseTool());
             }
         }
-        if (toolSO != null && Input.GetMouseButtonDown(0) && toolSO.type == ToolType.soil)
+        if (!cantClick && toolSO != null && Input.GetMouseButtonDown(0) && toolSO.type == ToolType.soil)
         {
             OnUseTool?.Invoke(toolSO);
         }
+    }
+
+    public void ClickMarkBtn() //즐겨 찾기 버튼 클릭 시
+    {
+        AllMark = !AllMark;
+        OnMark?.Invoke(AllMark);
     }
 
     public void CantClick() //다른 UI누를 때
@@ -54,12 +64,12 @@ public class ToolUseBtn : MonoBehaviour
         cantClick = true;
     }
 
-    public void CanClick()
+    public void CanClick() //다른 UI 안 누를 때 (벗어날 때)
     {
         cantClick = false;
     }
 
-    public void JustBtnClick()
+    public void JustBtnClick() //걍 클릭 버튼 용
     {
         OnUseTool?.Invoke(toolSO);
     }
@@ -90,7 +100,11 @@ public class ToolUseBtn : MonoBehaviour
         }
         else if(so.type == ToolType.delete) //지우는 도구일 때
         {
-            DeleteTool.canDelete = true;
+            ToolState.canDelete = true;
+        }
+        else if (so.type == ToolType.bind) //묶는 도구일 때
+        {
+            ToolState.canBind = true;
         }
     }
 
@@ -152,7 +166,7 @@ public class ToolUseBtn : MonoBehaviour
         yBtn.SetActive(false);
         xBtn.SetActive(false);
 
-        if(toolSO != null && toolSO.type != ToolType.car && toolSO.type != ToolType.delete && toolSO.type != ToolType.soil)
+        if(toolSO != null && (toolSO.type == ToolType.rotateTool || toolSO.type == ToolType.clcikTool))
         {
             card.toolList.Add(toolObj);
             toolObj.SetActive(false);
@@ -161,7 +175,8 @@ public class ToolUseBtn : MonoBehaviour
 
         toolObj = null;
         toolSO = null;
-        DeleteTool.canDelete = false;
+        ToolState.canDelete = false;
+        ToolState.canBind = false;
     }
 
     private void OnDisable()

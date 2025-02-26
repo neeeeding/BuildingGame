@@ -8,11 +8,13 @@ public class ToolCard : MonoBehaviour
 {
     [SerializeField] private GameObject realTool; //도구 (실제)
     [SerializeField] private ToolSO toolType; //도구 종류
+    public ToolSO ChildToolType => toolType;
     private Image _myImage; //도구 이미지 (버튼)
     public static Action<ToolSO, GameObject, ToolCard> toolBtnUse; //도구 사용 버튼
     public static Action toolBtnNotUse; //도구 사용 버튼
 
     private static bool isUseTool; //true : 사용중인 도구가 존재, false : 사용 가능함
+    private static ToolCard currentUse; //현재 사용중인 도구
 
     private bool isTool; // true : 설치용 도구 , false : 그외의 도구
 
@@ -27,17 +29,16 @@ public class ToolCard : MonoBehaviour
         _myImage = GetComponent<Image>();
         toolType.isUse = false;
 
-        if (toolType.type != ToolType.delete && toolType.type != ToolType.soil) //지우기만 아니면
+        isTool = toolType.type == ToolType.clcikTool || toolType.type == ToolType.rotateTool;
+
+        if (toolType.type != ToolType.delete && toolType.type != ToolType.soil && toolType.type != ToolType.bind) //지우기나 흙이나 묶기 아니면
         {
             realTool.SetActive(true);
         }
-
-        CompleteBtn.CurrentStep += ShowToolBtn;
     }
 
     private void Start()
     {
-        isTool = toolType.type == ToolType.clcikTool || toolType.type == ToolType.rotateTool;
         if (isTool)
         {
             StartCoroutine(AddListTools(ListMin));
@@ -75,13 +76,19 @@ public class ToolCard : MonoBehaviour
         }
     }
 
+    public void ClcikMarkBtn()
+    {
+        toolType.isMark = !toolType.isMark;
+        ToolUseBtn.OnMark?.Invoke(false);
+    }
+
     public GameObject AddTool() //도구 생성
     {
         GameObject newTool = Instantiate(realTool, transform);
         newTool.SetActive(false);
         newTool.transform.SetParent(transform, false);
 
-        if (newTool.TryGetComponent(out DeleteTool toolSC))
+        if (newTool.TryGetComponent(out ToolState toolSC))
         {
             toolSC.myRoot = this;
         }
@@ -121,24 +128,19 @@ public class ToolCard : MonoBehaviour
     }
 
 
-    private void ShowToolBtn(StepType step) //단계별 도구 보이기
-    {
-        NotUse();
-        gameObject.SetActive((toolType.useStep & step) != 0);
-    }
-
     public void ClickTool() //도구(버튼) 누를 때
     {
         if (!toolType.isUse && !isUseTool) UseTool(); //사용
         else if (toolType.isUse && isUseTool) NotUse(); //비활성
-        else return; //사용 중인데 다른 도구를 누름
-
-        toolType.isUse = !toolType.isUse;
-        isUseTool = !isUseTool;
+        else if (!toolType.isUse && isUseTool && currentUse != null) { currentUse.NotUse(); UseTool(); } //사용 중인데 다른 도구를 누름
+        else return;
     }
 
     public void NotUse() //도구 비활성
     {
+        toolType.isUse = false;
+        isUseTool = false;
+
         StopAllCoroutines();
         activeList = false ;
 
@@ -146,15 +148,19 @@ public class ToolCard : MonoBehaviour
 
         toolBtnNotUse?.Invoke();
         
-        if(toolType.type == ToolType.car)
+        if(toolType.type == ToolType.car) //차 타입이라면
         {
             realTool.SetActive(false);
             realTool.transform.SetParent(transform, false);
         }
     }
 
-    public void UseTool() //사용 버튼을 활성화
+    private void UseTool() //사용 버튼을 활성화
     {
+        toolType.isUse = true;
+        isUseTool = true;
+
+        currentUse = this;
         noUseTime = 0;
         activeList = true;
 
@@ -167,10 +173,5 @@ public class ToolCard : MonoBehaviour
             realTool.SetActive(true);
             realTool.transform.SetParent(StageManager.Instance.Player.transform, false);
         }
-    }
-
-    private void OnDisable()
-    {
-        CompleteBtn.CurrentStep -= ShowToolBtn;
     }
 }

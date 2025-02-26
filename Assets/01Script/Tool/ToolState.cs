@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeleteTool : MonoBehaviour
+public class ToolState : MonoBehaviour
 {
     public ToolCard myRoot;
 
     public static bool canDelete; //ture : 지워짐, false : 못 지움
+    public static bool canBind; //ture : 묶임, false : 못 묶음
     private void Awake()
     {
         canDelete = false;
@@ -19,9 +20,19 @@ public class DeleteTool : MonoBehaviour
         {
             DeleteMe();
         }
+        if(canBind && Input.GetMouseButtonDown(0))
+        {
+            BindMe();
+        }
     }
 
-    public void DeleteMe()
+    private void BindMe()
+    {
+        Rigidbody rigid = GetComponent<Rigidbody>();
+        rigid.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+    }
+
+    private void DeleteMe()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //레이로 마우스 위치 확인
         RaycastHit hit;

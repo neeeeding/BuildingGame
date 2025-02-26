@@ -23,7 +23,7 @@ public class GroundDig : MonoBehaviour
         ResetGround();
     }
 
-    private void GroundDigging(ToolSO tool)
+    private void GroundDigging(ToolSO tool) //뭔 도구인지
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
