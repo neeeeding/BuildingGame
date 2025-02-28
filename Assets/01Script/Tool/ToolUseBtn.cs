@@ -98,6 +98,10 @@ public class ToolUseBtn : MonoBehaviour
         {
             ToolTypeRotate();
         }
+        else if(so.type == ToolType.clcikTool) //그냥 도구 일 때
+        {
+            ToolPreview();
+        }
         else if(so.type == ToolType.delete) //지우는 도구일 때
         {
             ToolState.canDelete = true;
@@ -113,12 +117,17 @@ public class ToolUseBtn : MonoBehaviour
         yBtn.SetActive(true);
         xBtn.SetActive(true);
 
+        ToolPreview();
+
+        toolAngle = Quaternion.identity;
+    }
+
+    private void ToolPreview()
+    {
         GameObject toolPrepabs = Instantiate(toolObj, StageManager.Instance.Player.transform); //미리보기를 생성
         toolPrepabs.SetActive(true);
         toolObj = toolPrepabs;
         toolObj.GetComponent<Collider>().enabled = false;
-
-        toolAngle = Quaternion.identity;
     }
 
     private Vector3 ToolPosition() //미리 보기 도구의 위치
