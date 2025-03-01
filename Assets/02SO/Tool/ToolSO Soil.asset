@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: ToolSO Soil
   m_EditorClassIdentifier: 
   toolName: Soil
-  useStep: 15
-  type: 2
+  useStep: -1
+  type: 3
+  isMark: 0
   isUse: 0
   toolImage: {fileID: 21300000, guid: b50a8d2cd95d9144c8db14a6e4cb45ab, type: 3}

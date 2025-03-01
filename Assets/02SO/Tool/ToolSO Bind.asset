@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toolName: Bind
   useStep: -1
-  type: 5
+  type: 6
   isMark: 0
   isUse: 0
   toolImage: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}

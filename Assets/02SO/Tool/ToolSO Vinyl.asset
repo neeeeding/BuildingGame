@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toolName: Vinyl
   useStep: 2
-  type: 3
+  type: 4
   isMark: 0
   isUse: 0
   toolImage: {fileID: 21300000, guid: 1398b0c56278c5c4b858939d3cdd5818, type: 3}

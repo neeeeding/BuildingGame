@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ToolSO Excavator
   m_EditorClassIdentifier: 
   toolName: Excavator
-  useStep: 15
+  useStep: -1
   type: 0
   isMark: 1
   isUse: 0

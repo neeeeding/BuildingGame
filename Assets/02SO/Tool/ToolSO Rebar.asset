@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: ToolSO Rebar
   m_EditorClassIdentifier: 
   toolName: Rebar
-  useStep: 30
-  type: 1
+  useStep: 14
+  type: 2
+  isMark: 0
   isUse: 0
   toolImage: {fileID: 21300000, guid: 7efeb8a7b3b1ef040aa71e5b235e1b72, type: 3}

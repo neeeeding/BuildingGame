@@ -34,7 +34,7 @@ public class GroundDig : MonoBehaviour
         {
             ModifyTerrain(worldMousePos, false);
         }
-        else if(tool.type == ToolType.car)
+        else if(tool.type == ToolType.excavator)
         {
             ModifyTerrain(StageManager.Instance.Player.transform.TransformPoint(new Vector3(0.65f, 1.25f, 3.11f)), true);
         }

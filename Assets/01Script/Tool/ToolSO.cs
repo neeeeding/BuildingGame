@@ -20,5 +20,5 @@ public class ToolSO : ScriptableObject
 
 public enum ToolType
 {
-    car, rotateTool, soil, clcikTool, delete, bind
+    excavator, pumpCar, rotateTool, soil, clcikTool, delete, bind
 }

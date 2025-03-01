@@ -148,7 +148,7 @@ public class ToolCard : MonoBehaviour
 
         toolBtnNotUse?.Invoke();
         
-        if(toolType.type == ToolType.car) //차 타입이라면
+        if(toolType.type == ToolType.excavator || toolType.type == ToolType.pumpCar) //차 타입이라면
         {
             realTool.SetActive(false);
             realTool.transform.SetParent(transform, false);
@@ -168,7 +168,7 @@ public class ToolCard : MonoBehaviour
 
         toolBtnUse?.Invoke(toolType, realTool, this);
 
-        if (toolType.type == ToolType.car) //차 타입이라면
+        if (toolType.type == ToolType.excavator || toolType.type == ToolType.pumpCar) //차 타입이라면
         {
             realTool.SetActive(true);
             realTool.transform.SetParent(StageManager.Instance.Player.transform, false);

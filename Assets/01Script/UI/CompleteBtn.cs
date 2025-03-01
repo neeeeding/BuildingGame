@@ -60,10 +60,10 @@ public class CompleteBtn : MonoBehaviour
 public enum StepType
 {
     [Description("철거 완료")] Demolition = 1<<0,
-    [Description("터파기 완료")] Digging = 1<<1,
-    [Description("바닥기초 완료")] FloorBasic = 1<<2,
-    [Description("골조 공사 완료")] FrameWork = 1<<3,
-    [Description("마감 공사 완료")] FinishingWork = 1<<4,
+    //[Description("터파기 완료")] Digging = 1<<1,
+    [Description("바닥기초 완료")] FloorBasic = 1<<1,
+    [Description("골조 공사 완료")] FrameWork = 1<<2,
+    [Description("마감 공사 완료")] FinishingWork = 1<<3,
     [Description("완료")] None = 0,
     [Description("완료")] all = ~0
 }

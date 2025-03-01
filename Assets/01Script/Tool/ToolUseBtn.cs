@@ -89,7 +89,7 @@ public class ToolUseBtn : MonoBehaviour
         toolObj = tool;
         toolSO = so;
         card = toolCard;
-        if(so.type == ToolType.car) //차일 때
+        if(so.type == ToolType.excavator || so.type == ToolType.pumpCar) //차일 때
         {
             btnImage.gameObject.SetActive(true);
             btnImage.sprite = so.toolImage;
@@ -122,7 +122,7 @@ public class ToolUseBtn : MonoBehaviour
         toolAngle = Quaternion.identity;
     }
 
-    private void ToolPreview()
+    private void ToolPreview() //도구 미리보기
     {
         GameObject toolPrepabs = Instantiate(toolObj, StageManager.Instance.Player.transform); //미리보기를 생성
         toolPrepabs.SetActive(true);
