@@ -11,11 +11,21 @@ public class ToolSO : ScriptableObject
 
     public ToolType type; //도구 종류
 
+    public float count;
+
     public bool isMark; //true : 즐겨찾기, false : 즐겨찾기 아님
 
     public bool isUse; //true : 사용중임, false : 사용중이 아님
 
     public Sprite toolImage; //도구 사진
+
+    [ContextMenu("ResetSO")]
+    public void ResetSO()
+    {
+        count = 0;
+        isMark = false;
+        isUse = false;
+    }
 }
 
 public enum ToolType

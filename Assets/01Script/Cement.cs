@@ -14,7 +14,9 @@ public class Cement : MonoBehaviour
 
     private static List<Cement> cmentList = new List<Cement>();
 
-    private bool hardening; //true : 굳음, false : 흐르는 중
+    private float interval = 0.2f; //퍼지는 정도
+
+    [SerializeField] private bool hardening; //true : 굳음, false : 흐르는 중
 
     private bool make; //true : 새거 만드는 애, false : 그냥 지워질 애
 
@@ -26,6 +28,8 @@ public class Cement : MonoBehaviour
 
         cmentList.Add(this);
         hardening = false;
+
+        make = true;
     }
 
     private void Start()
@@ -35,14 +39,10 @@ public class Cement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Formwork"))
         {
             Diffuse();
             Hardening();
-        }
-        else if (collision.gameObject.CompareTag("Formwork"))
-        {
-            Diffuse();
         }
         else if (collision.gameObject.CompareTag("Cement"))
         {
@@ -50,6 +50,7 @@ public class Cement : MonoBehaviour
             {
                 Diffuse();
                 Hardening();
+                collision.gameObject.transform.position += new Vector3(0, interval, 0);
             }
             CementAdd(collision.gameObject.GetComponent<Cement>());
         }
@@ -59,8 +60,6 @@ public class Cement : MonoBehaviour
     {
         if (!hardening)
         {
-            float interval = 0.2f; //퍼지는 정도
-
             transform.localScale += new Vector3(interval, -interval, interval);
 
             myCollider.sharedMesh = myMeshFilter.mesh;
@@ -78,16 +77,25 @@ public class Cement : MonoBehaviour
     {
         if (otherCement == null || otherCement == this) return; //없으면 가
 
+        Vector3 myPos = transform.position;
+
+        Destroy(myCollider); //뺏어버리기
+        myCollider = null;
+
         RandomCement(this, otherCement);
 
         Mesh addMesh = AddMeshs(myMeshFilter, otherCement.myMeshFilter);
 
-        //if(make) NewCement(addMesh);
+        myCollider = gameObject.AddComponent<MeshCollider>(); //뺏은거 돌려주기
+        myCollider.sharedMesh = addMesh;
+        myCollider.convex = true;
+
         if (make)
         {
             myMeshFilter.mesh = addMesh;
             myCollider.sharedMesh = addMesh;
             Hardening();
+            transform.position = myPos;
         }
         else
         {
@@ -98,25 +106,34 @@ public class Cement : MonoBehaviour
 
     private void RandomCement(Cement me, Cement other)
     {
-        me.make = UnityEngine.Random.Range(0, 2) == 0? true : false;
-        other.make = !me.make;
+        if(make && other.make)
+        {
+            me.make = UnityEngine.Random.Range(0, 2) == 0 ? true : false;
+            other.make = !me.make;
+        }
     }
 
     private Mesh AddMeshs(MeshFilter me, MeshFilter other) //메쉬 만들기
     {
         CombineInstance[] combine = new CombineInstance[2];
 
+        // 첫 번째 메쉬의 로컬 좌표를 기준으로 다른 메쉬를 변환
+        Matrix4x4 myLocalMatrix = me.transform.worldToLocalMatrix;
+
         combine[0].mesh = me.mesh;
-        combine[0].transform = Matrix4x4.identity; // 로컬 좌표로 병합
+        combine[0].transform = Matrix4x4.identity; // 기준 메쉬는 그대로 사용
+
         combine[1].mesh = other.mesh;
-        combine[1].transform = Matrix4x4.identity;
+        combine[1].transform = myLocalMatrix * other.transform.localToWorldMatrix;
+        // 상대 변환을 적용하여 동일한 로컬 좌표계에서 병합
 
         Mesh combinedMesh = new Mesh();
-        combinedMesh.CombineMeshes(combine, true);
+        combinedMesh.CombineMeshes(combine, true, true); // transform 정보도 적용
 
         combinedMesh.RecalculateNormals(); // 면 정리
         combinedMesh.RecalculateBounds();  // 경계 재계산
 
         return combinedMesh;
     }
+
 }

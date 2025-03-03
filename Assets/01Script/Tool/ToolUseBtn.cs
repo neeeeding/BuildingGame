@@ -164,6 +164,8 @@ public class ToolUseBtn : MonoBehaviour
             tool.transform.position = toolObj.transform.position;
             tool.transform.rotation = toolAngle;
 
+            card.AddCountText(1);
+
             yield return new WaitForSeconds(1.1f);
             OnNotUse?.Invoke();
         }

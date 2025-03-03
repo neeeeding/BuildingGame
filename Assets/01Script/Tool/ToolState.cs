@@ -38,6 +38,7 @@ public class ToolState : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
         {
+            myRoot.AddCountText(-1);
             myRoot.toolList.Add(gameObject);
             gameObject.SetActive(false);
             gameObject.transform.SetParent(myRoot.transform, false);

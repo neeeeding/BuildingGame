@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class ToolCard : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class ToolCard : MonoBehaviour
     [SerializeField] private ToolSO toolType; //도구 종류
     public ToolSO ChildToolType => toolType;
     private Image _myImage; //도구 이미지 (버튼)
+    private TextMeshProUGUI _countText; //수세기
+
     public static Action<ToolSO, GameObject, ToolCard> toolBtnUse; //도구 사용 버튼
     public static Action toolBtnNotUse; //도구 사용 버튼
 
@@ -27,6 +30,9 @@ public class ToolCard : MonoBehaviour
     private void Awake()
     {
         _myImage = GetComponent<Image>();
+        _countText = GetComponentInChildren<TextMeshProUGUI>();
+        _countText.gameObject.SetActive(false);
+
         toolType.isUse = false;
 
         isTool = toolType.type == ToolType.clcikTool || toolType.type == ToolType.rotateTool;
@@ -34,6 +40,7 @@ public class ToolCard : MonoBehaviour
         if (toolType.type != ToolType.delete && toolType.type != ToolType.soil && toolType.type != ToolType.bind) //지우기나 흙이나 묶기 아니면
         {
             realTool.SetActive(true);
+            _countText.gameObject.SetActive(isTool);
         }
     }
 
@@ -42,6 +49,7 @@ public class ToolCard : MonoBehaviour
         if (isTool)
         {
             StartCoroutine(AddListTools(ListMin));
+            AddCountText(0);
         }
 
         if (toolType.type != ToolType.delete)
@@ -76,7 +84,13 @@ public class ToolCard : MonoBehaviour
         }
     }
 
-    public void ClcikMarkBtn()
+    public void AddCountText(int add)
+    {
+        toolType.count += add;
+        _countText.text = toolType.count.ToString();
+    }
+
+    public void ClcikMarkBtn() //즐겨찾기 버튼
     {
         toolType.isMark = !toolType.isMark;
         ToolUseBtn.OnMark?.Invoke(false);
