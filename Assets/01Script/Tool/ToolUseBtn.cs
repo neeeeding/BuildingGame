@@ -136,7 +136,7 @@ public class ToolUseBtn : MonoBehaviour
 
         float distance = 1;
 
-        Vector3 worldMousePos = ray.GetPoint(distance);
+        Vector3 worldMousePos = ray.GetPoint(distance); 
         return toolObj.transform.parent.InverseTransformPoint(worldMousePos);
     }
 

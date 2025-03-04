@@ -22,19 +22,32 @@ public class Cement : MonoBehaviour
 
     private void Awake()
     {
-        myMeshFilter = GetComponent<MeshFilter>();
-        myCollider = GetComponent<MeshCollider>();
+        myMeshFilter = GetComponentInChildren<MeshFilter>();
+        myCollider = GetComponentInChildren<MeshCollider>();
         rigid = GetComponent<Rigidbody>();
 
         cmentList.Add(this);
         hardening = false;
 
         make = true;
+        rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
     }
 
     private void Start()
     {
         transform.SetParent(toolKeep.transform, false);
+    }
+
+    public void CementDrop()
+    {
+        transform.localScale += new Vector3(0, interval, 0);
+
+        myCollider.sharedMesh = myMeshFilter.mesh;
+    }
+
+    public void ToolKeep(GameObject me)
+    {
+        toolKeep = me;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -44,15 +57,20 @@ public class Cement : MonoBehaviour
             Diffuse();
             Hardening();
         }
-        else if (collision.gameObject.CompareTag("Cement"))
+        //else if (collision.gameObject.CompareTag("Cement"))
+        //{
+        //    if (!hardening)
+        //    {
+        //        collision.gameObject.transform.position += new Vector3(0, interval, 0);
+        //    }
+        //    CementAdd(collision.gameObject.GetComponent<Cement>());
+        //}
+        else if (collision.gameObject.CompareTag("Player"))
         {
-            if (!hardening)
-            {
-                Diffuse();
-                Hardening();
-                collision.gameObject.transform.position += new Vector3(0, interval, 0);
-            }
-            CementAdd(collision.gameObject.GetComponent<Cement>());
+            ContactPoint contact = collision.contacts[0];
+            Vector3 pos = contact.point;
+
+            print(pos.normalized);
         }
     }
 
@@ -104,7 +122,7 @@ public class Cement : MonoBehaviour
         }
     }
 
-    private void RandomCement(Cement me, Cement other)
+    private void RandomCement(Cement me, Cement other) //삭제 혹은 커질 애 고르기
     {
         if(make && other.make)
         {
