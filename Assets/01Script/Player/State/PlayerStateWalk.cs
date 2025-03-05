@@ -7,7 +7,7 @@ public class PlayerStateWalk : PlayerState
 {
     private float _moveSpeed = 8f; //움직임 속도
 
-    private float _walkSpeed = 8f;
+    private float _walkSpeed = 4f;
     private float _FastSpeed = 15f;
     private Vector3 _moveVector;
 

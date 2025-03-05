@@ -31,7 +31,7 @@ public class CameraRotate : MonoBehaviour
 
         mousePoint = new Vector2(Mathf.Clamp(Input.mousePosition.x, 0, 1920), Mathf.Clamp(Input.mousePosition.y, 0, 1080));
 
-        if (canRatate && mousePoint.y >= 250 /*&& mousePoint.y <= 1050*/)
+        if (canRatate /*&& mousePoint.y >= 250 /*&& mousePoint.y <= 1050*/)
         {
             transform.localEulerAngles = new Vector3(IsCamera ? -mouseY : 0, IsCamera ? 0 : mouseX, 0);
         }

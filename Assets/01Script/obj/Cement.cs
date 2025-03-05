@@ -20,6 +20,9 @@ public class Cement : MonoBehaviour
 
     private bool make; //true : 새거 만드는 애, false : 그냥 지워질 애
 
+    private Vector3 foul; //막힌 부분 (양수)
+    private Vector3 foulMinus; //막힌 부분 (음수)
+
     private void Awake()
     {
         myMeshFilter = GetComponentInChildren<MeshFilter>();
@@ -31,6 +34,9 @@ public class Cement : MonoBehaviour
 
         make = true;
         rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+        foul = Vector3.zero;
+        foulMinus = Vector3.zero;
     }
 
     private void Start()
@@ -54,6 +60,43 @@ public class Cement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Formwork"))
         {
+            Vector3 worldPos = collision.contacts[0].point;
+            Vector3 localPos = transform.InverseTransformPoint(worldPos);
+
+            if (Mathf.Abs(localPos.x) > Mathf.Abs(localPos.y) && Mathf.Abs(localPos.x) > Mathf.Abs(localPos.z)) //x가 가장 큼
+            {
+                if (localPos.x > 0)
+                {
+                    foul += new Vector3(1, 0, 0);
+                }
+                else
+                {
+                    foulMinus += new Vector3(1, 0, 0);
+                }
+            }
+            else if (Mathf.Abs(localPos.y) > Mathf.Abs(localPos.x) && Mathf.Abs(localPos.y) > Mathf.Abs(localPos.z)) //y가 가장 큼
+            {
+                if (localPos.y > 0)
+                {
+                    foul += new Vector3(0, 1, 0);
+                }
+                else
+                {
+                    foulMinus += new Vector3(0, 1, 0);
+                }
+            }
+            else //z가 가장 큼
+            {
+                if (localPos.z > 0)
+                {
+                    foul += new Vector3(0, 0, 1);
+                }
+                else
+                {
+                    foulMinus += new Vector3(0, 0, 1);
+                }
+            }
+
             Diffuse();
             Hardening();
         }
@@ -65,13 +108,6 @@ public class Cement : MonoBehaviour
         //    }
         //    CementAdd(collision.gameObject.GetComponent<Cement>());
         //}
-        else if (collision.gameObject.CompareTag("Player"))
-        {
-            ContactPoint contact = collision.contacts[0];
-            Vector3 pos = contact.point;
-
-            print(pos.normalized);
-        }
     }
 
     private void Diffuse() //퍼지기
@@ -88,7 +124,7 @@ public class Cement : MonoBehaviour
     {
         hardening = true;
 
-        rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        rigid.constraints = RigidbodyConstraints.FreezePosition| RigidbodyConstraints.FreezeRotation;
     }
 
     private void CementAdd(Cement otherCement) //시멘트 끼리 합치기
