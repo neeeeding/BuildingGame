@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,8 +21,10 @@ public class Cement : MonoBehaviour
 
     private bool make; //true : 새거 만드는 애, false : 그냥 지워질 애
 
-    private Vector3 foul; //막힌 부분 (양수)
-    private Vector3 foulMinus; //막힌 부분 (음수)
+    //private Vector3 foul; //막힌 부분 (양수)
+    //private Vector3 foulMinus; //막힌 부분 (음수)
+
+    private bool[] foul = new bool[6];
 
     private void Awake()
     {
@@ -34,9 +37,6 @@ public class Cement : MonoBehaviour
 
         make = true;
         rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-
-        foul = Vector3.zero;
-        foulMinus = Vector3.zero;
     }
 
     private void Start()
@@ -44,11 +44,35 @@ public class Cement : MonoBehaviour
         transform.SetParent(toolKeep.transform, false);
     }
 
-    public void CementDrop()
+    private void Update()
+    {
+        print($"X : {foul[0]}, Y : {foul[1]}, Z : {foul[2]}, -X : {foul[3]}, -Y : {foul[4]}, -Z : {foul[5]}");
+    }
+
+    public void CementDrop()  //시멘트 받기
     {
         transform.localScale += new Vector3(0, interval, 0);
 
         myCollider.sharedMesh = myMeshFilter.mesh;
+        if (foul.All(x => x == false))
+        {
+            print("맞아...?");
+            hardening = false;
+            Diffuse();
+            Hardening();  
+        }
+        else 
+        {
+            print("이거야");
+            transform.localPosition += new Vector3(foul[0] ? foul[3]? 0 : -(interval/2) : foul[3] ? (interval / 2) : 0,
+                foul[1] ? foul[4] ? 0 : -(interval / 2) : foul[4] ? (interval / 2) : 0,
+                foul[2] ? foul[5] ? 0 : -(interval / 2) : foul[5] ? (interval / 2) : 0);
+
+            transform.localScale += new Vector3(foul[0] ? foul[3] ? 0 : (interval/2) : foul[3] ? (interval / 2) : interval, -(interval/2),
+                foul[2] ? foul[5] ? 0 : (interval / 2) : foul[5] ? (interval / 2) : interval);
+            myCollider.sharedMesh = myMeshFilter.mesh;
+        }
+
     }
 
     public void ToolKeep(GameObject me)
@@ -62,39 +86,22 @@ public class Cement : MonoBehaviour
         {
             Vector3 worldPos = collision.contacts[0].point;
             Vector3 localPos = transform.InverseTransformPoint(worldPos);
+            print(localPos);
 
             if (Mathf.Abs(localPos.x) > Mathf.Abs(localPos.y) && Mathf.Abs(localPos.x) > Mathf.Abs(localPos.z)) //x가 가장 큼
             {
-                if (localPos.x > 0)
-                {
-                    foul += new Vector3(1, 0, 0);
-                }
-                else
-                {
-                    foulMinus += new Vector3(1, 0, 0);
-                }
+                foul[0] = localPos.x > 0;
+                foul[3] = localPos.x <= 0;
             }
             else if (Mathf.Abs(localPos.y) > Mathf.Abs(localPos.x) && Mathf.Abs(localPos.y) > Mathf.Abs(localPos.z)) //y가 가장 큼
             {
-                if (localPos.y > 0)
-                {
-                    foul += new Vector3(0, 1, 0);
-                }
-                else
-                {
-                    foulMinus += new Vector3(0, 1, 0);
-                }
+                foul[1] = localPos.y > 0;
+                foul[4] = localPos.y <= 0;
             }
             else //z가 가장 큼
             {
-                if (localPos.z > 0)
-                {
-                    foul += new Vector3(0, 0, 1);
-                }
-                else
-                {
-                    foulMinus += new Vector3(0, 0, 1);
-                }
+                foul[2] = localPos.z > 0;
+                foul[5] = localPos.z <= 0;
             }
 
             Diffuse();
@@ -125,6 +132,7 @@ public class Cement : MonoBehaviour
         hardening = true;
 
         rigid.constraints = RigidbodyConstraints.FreezePosition| RigidbodyConstraints.FreezeRotation;
+        rigid.isKinematic = true;
     }
 
     private void CementAdd(Cement otherCement) //시멘트 끼리 합치기
