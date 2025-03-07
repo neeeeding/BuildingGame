@@ -46,7 +46,7 @@ public class Cement : MonoBehaviour
 
     private void Update()
     {
-        print($"X : {foul[0]}, Y : {foul[1]}, Z : {foul[2]}, -X : {foul[3]}, -Y : {foul[4]}, -Z : {foul[5]}");
+       // print($"X : {foul[0]}, Y : {foul[1]}, Z : {foul[2]}, -X : {foul[3]}, -Y : {foul[4]}, -Z : {foul[5]}");
     }
 
     public void CementDrop()  //시멘트 받기
@@ -64,12 +64,11 @@ public class Cement : MonoBehaviour
         else 
         {
             print("이거야");
-            transform.localPosition += new Vector3(foul[0] ? foul[3]? 0 : -(interval/2) : foul[3] ? (interval / 2) : 0,
-                foul[1] ? foul[4] ? 0 : -(interval / 2) : foul[4] ? (interval / 2) : 0,
-                foul[2] ? foul[5] ? 0 : -(interval / 2) : foul[5] ? (interval / 2) : 0);
+            transform.localPosition += new Vector3(foul[0] ? foul[3]? 0 : -(interval/3) : foul[3] ? (interval / 3) : 0, 0,
+                foul[2] ? foul[5] ? 0 : -(interval / 3) : foul[5] ? (interval / 3) : 0);
 
-            transform.localScale += new Vector3(foul[0] ? foul[3] ? 0 : (interval/2) : foul[3] ? (interval / 2) : interval, -(interval/2),
-                foul[2] ? foul[5] ? 0 : (interval / 2) : foul[5] ? (interval / 2) : interval);
+            transform.localScale += new Vector3(foul[0] ? foul[3] ? 0 : (interval/2) : foul[3] ? (interval / 2) : (interval / 2), -(interval / 2),
+                foul[2] ? foul[5] ? 0 : (interval / 2) : foul[5] ? (interval / 2) : (interval / 2));
             myCollider.sharedMesh = myMeshFilter.mesh;
         }
 
@@ -82,13 +81,14 @@ public class Cement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        print(collision.gameObject.name);
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Formwork"))
         {
             Vector3 worldPos = collision.contacts[0].point;
             Vector3 localPos = transform.InverseTransformPoint(worldPos);
             print(localPos);
 
-            if (Mathf.Abs(localPos.x) > Mathf.Abs(localPos.y) && Mathf.Abs(localPos.x) > Mathf.Abs(localPos.z)) //x가 가장 큼
+            if (Mathf.Abs(localPos.x) >= Mathf.Abs(localPos.y) && Mathf.Abs(localPos.x) >= Mathf.Abs(localPos.z)) //x가 가장 큼
             {
                 foul[0] = localPos.x > 0;
                 foul[3] = localPos.x <= 0;
